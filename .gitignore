@@ -176,3 +176,8 @@ logs/
 
 # Folder that has CTRE Phoenix Sim device config storage
 ctre_sim/
+
+# VSCode config files
+.vscode/*
+.vscode/settings.json
+.vscode/launch.json
