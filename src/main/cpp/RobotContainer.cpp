@@ -11,13 +11,19 @@
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
 #include <frc2/command/button/JoystickButton.h>
-#include <frc2/command/button/POVButton.h>
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandScheduler.h>
 #include <frc2/command/InstantCommand.h>
 #include <frc2/command/RunCommand.h>
+#include <frc2/command/Commands.h>
+#include "commands/IntakeCommand.h"
+#include "commands/ClimberLowerCommand.h"
+#include "commands/ClimberRaiseCommand.h"
+#include "commands/ClimberStopCommand.h"
 #include "commands/ShootCommands.h"
-#include "commands/PositionTransferArmCommand.h"
+#include "commands/PIDTransferArmCommand.h"
+#include "commands/IntakeEjectCommand.h"
+#include "commands/DriveCommands.h"
 
 #include <cmath>
 #include <cstdio>
@@ -26,7 +32,6 @@
 #include <units/acceleration.h>
 #include <units/velocity.h>
 #include <frc/shuffleboard/Shuffleboard.h>
-#include <frc/smartdashboard/SmartDashboard.h>
 
 RobotContainer::RobotContainer() noexcept
 {
@@ -63,18 +68,12 @@ void RobotContainer::AutonomousExit() noexcept {}
 
 std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
 {
-  frc::TrajectoryConfig trajectoryConfig{4.0_mps, 2.0_mps_sq};
-  frc::SwerveDriveKinematics<4> kinematics{m_driveSubsystem.kDriveKinematics};
-
-  trajectoryConfig.SetKinematics(kinematics);
-
-  // TODO: Update trajectory path to our autonomous path
-  frc::Trajectory trajectory = frc::TrajectoryGenerator::GenerateTrajectory(
-      {frc::Pose2d{},
-       frc::Pose2d{1.0_m, 0.0_m, frc::Rotation2d{}}},
-      trajectoryConfig);
-
-  return TrajectoryAuto::TrajectoryAutoCommandFactory(&m_driveSubsystem, "Test Trajectory", trajectory);
+  // DriveCommand(xspeed, yspeed, rotation, time, &driveSubsystem)
+  // will move in the given x and y direction while rotating for time seconds
+  // xspeed, yspeed, and rotation will likely be between -1 and 1, but they do not need to be in these bounds
+  return ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
+  .AndThen(DriveCommand(.5, 0, 0, 1_s, &m_driveSubsystem).ToPtr())
+  .AndThen(DriveCommand(0, 0.0, 0, 1_s, &m_driveSubsystem).ToPtr());
 }
 #pragma endregion
 
@@ -141,13 +140,13 @@ std::tuple<double, double, double, bool> RobotContainer::GetDriveTeleopControls(
   Finally, the other controller joystick is used for commanding rotation and
   things work out so that this is also an inverted X axis.
   */
-  double LeftStickX = -m_xbox.GetLeftY();
-  double LeftStickY = -m_xbox.GetLeftX();
-  double rightStickRot = -m_xbox.GetRightX();
+  double LeftStickX = -m_xboxDrive.GetLeftY();
+  double LeftStickY = -m_xboxDrive.GetLeftX();
+  double rightStickRot = -m_xboxDrive.GetRightX();
 
   if (triggerSpeedEnabled) // scale speed by analog trigger
   {
-    double RightTrigAnalogVal = m_xbox.GetRightTriggerAxis();
+    double RightTrigAnalogVal = m_xboxDrive.GetRightTriggerAxis();
     RightTrigAnalogVal = ConditionRawTriggerInput(RightTrigAnalogVal);
 
     if (LeftStickX != 0 || LeftStickY != 0)
@@ -170,16 +169,12 @@ std::tuple<double, double, double, bool> RobotContainer::GetDriveTeleopControls(
     LeftStickY = ConditionRawJoystickInput(LeftStickY);
   }
 
-  rightStickRot = ConditionRawJoystickInput(rightStickRot, 0.0);
+  rightStickRot = ConditionRawJoystickInput(rightStickRot);
 
   // TODO: decide if this is still needed
   LeftStickX *= 2.0;
   LeftStickY *= 2.0;
   rightStickRot *= 1.6;
-
-  frc::SmartDashboard::PutNumber("X", LeftStickX);
-  frc::SmartDashboard::PutNumber("Y", LeftStickY);
-  frc::SmartDashboard::PutNumber("Z", rightStickRot);
 
   return std::make_tuple(LeftStickX, LeftStickY, rightStickRot, m_fieldOriented);
 }
@@ -187,7 +182,7 @@ std::tuple<double, double, double, bool> RobotContainer::GetDriveTeleopControls(
 double RobotContainer::ConditionRawTriggerInput(double RawTrigVal) noexcept
 {
   // Set a raw trigger value using the right trigger
-  RawTrigVal = m_xbox.GetRightTriggerAxis();
+  RawTrigVal = m_xboxDrive.GetRightTriggerAxis();
   double deadZoneVal = 0.05;
   double deadZoneCorrection = 1.0 / (1.0 - deadZoneVal);
 
@@ -254,33 +249,32 @@ double RobotContainer::ConditionRawJoystickInput(double RawJoystickVal, double m
 void RobotContainer::ConfigureBindings() noexcept
 {
   // TODO: define Keybindings here
-  m_xbox.Start().OnTrue(
+  m_xboxDrive.Start().OnTrue(
       frc2::InstantCommand([&]() -> void
                            { triggerSpeedEnabled = !triggerSpeedEnabled; },
                            {})
           .ToPtr());
 
-  m_xbox.A().OnTrue(frc2::InstantCommand([&]() -> void
-                                         { m_intakeSubsystem.SetSpinMotorVoltagePercent(intake::kIntakeSpinMotorVoltagePercent); },
-                                         {&m_intakeSubsystem})
-                        .ToPtr());
-  m_xbox.A().OnFalse(frc2::InstantCommand([&]() -> void
-                                          { m_intakeSubsystem.StopIntake(); },
-                                          {&m_intakeSubsystem})
-                         .ToPtr());
+  m_xboxOperate.A().OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
+  m_xboxOperate.B().OnTrue(IntakeEjectCommand(&m_intakeSubsystem).ToPtr());
 
-  m_xbox.B().OnTrue(frc2::InstantCommand([&]() -> void
-                                         { m_shooterSubsystem.SetShooterMotorVoltagePercent(shooter::kShooterMotorVoltagePercent); },
-                                         {&m_shooterSubsystem})
-                        .ToPtr());
-  m_xbox.B().OnFalse(frc2::InstantCommand([&]() -> void
-                                          { m_shooterSubsystem.StopShooter(); },
-                                          {&m_shooterSubsystem})
-                         .ToPtr());
+  // Runs shoot command to move arm into postion, start up the shooting motors and eject the note                     
+  //m_xboxOperate.Y().OnTrue(ShootCommands(&m_shooterSubsystem).ToPtr());
+  
+  m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
 
-  m_xbox.Y().OnTrue(ShootCommands(&m_shooterSubsystem).ToPtr());
-                         
-  m_xbox.X().OnTrue(PositionTransferArm(&m_transferArmSubsystem, 90_deg).ToPtr()); // Example Only
+  m_xboxOperate.X().OnTrue(PIDPositionTransferArm(arm::kShooterToAmpAngle, &m_transferArmSubsystem).ToPtr()); // Example Only
+  m_xboxOperate.LeftBumper().OnTrue(PIDPositionTransferArm(arm::kShooterToIntakeAngle, &m_transferArmSubsystem).ToPtr()); // Intake
+  m_xboxOperate.RightBumper().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr()); // Shooter
+
+  m_xboxOperate.RightTrigger().OnTrue(ClimberRaiseCommand(&m_climberSubsystem).ToPtr()); // Raise the climber while button is pressed.
+  m_xboxOperate.RightTrigger().OnFalse(ClimberStopCommand(&m_climberSubsystem).ToPtr());   // on false stop the climber motor
+
+  m_xboxOperate.LeftTrigger().OnTrue(ClimberLowerCommand(&m_climberSubsystem).ToPtr()); //Lower the climber while button is pressed
+  m_xboxOperate.LeftTrigger().OnFalse(ClimberStopCommand(&m_climberSubsystem).ToPtr());   // on false stop the climber motor
+
+  // dpadUp.OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
+  // dpadDown.OnTrue(IntakeEjectCommand(&m_intakeSubsystem).ToPtr());
 }
 #pragma endregion
 

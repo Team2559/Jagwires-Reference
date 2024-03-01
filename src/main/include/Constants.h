@@ -137,7 +137,7 @@ namespace shooter
     constexpr int kRightShooterMotorCanID = 15;
     constexpr bool kRightShooterMotorIsInverted = true;
 
-    constexpr int kShooterMotorVoltagePercent = 1;
+    constexpr double kShooterMotorVoltagePercent = .80;
 }
 
 namespace intake
@@ -152,17 +152,48 @@ namespace intake
     constexpr units::degree_t kIntakeArmPickup = 180.0_deg;
     constexpr units::degree_t kIntakeArmLoad = 0.0_deg;
 
-    constexpr double kIntakeSpinMotorVoltagePercent = .15;
+    constexpr double kIntakeSpinMotorVoltagePercent = .80;
+    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.90;
 }
 
 namespace arm
 {
     // Arm Motor Parameters
     constexpr int kTransferArmMotorCanID = 17;
-    constexpr bool kTransferArmMotorIsInverted = false;
+    constexpr bool kTransferArmMotorIsInverted = true;
 
     // Arm Controller
-    constexpr double kArmPositionP = 0.005;
-    constexpr double kArmPositionD = 0.0005;
+    constexpr double kArmPositionP = 10.0;
+    constexpr double kArmPositionD = .10;
     constexpr double kArmPositionF = 0.0;
+
+    constexpr units::turn_t kShooterToAmpAngle = -50_deg;
+    constexpr units::turn_t kShooterToIntakeAngle = -200_deg;
+}
+
+namespace climber
+{
+    //Climber parameters
+    constexpr int kClimberMotorCanID = 18;
+    constexpr bool kClimberMotorIsInverted = false;
+    constexpr double kClimberMotorRaiseVoltagePercent = .50;
+    constexpr units::second_t kClimberRaiseTimer = 2_s;
+    constexpr double kClimberMotorLowerVoltagePercent = -.50;
+    constexpr units::second_t kClimberLowerTimer = 2_s;
+
+    constexpr int kClimberSolenoidCanID = 19;
+
+}
+
+namespace amp 
+{
+    //Bosch motor for extending out and back
+    constexpr int kAmpExtendMotorCanID = 20;
+    constexpr bool kAmpExtendMotorIsInverted = false;
+    constexpr double kAmpExtendMotorVoltagePercent = .15;
+
+    //Johnson Electric for raising and lowering 
+    constexpr int kAmpRaiseMotorCanID = 21;
+    constexpr bool kAmpRaiseMotorIsInverted = false;
+    constexpr double kAmpRaiseMotorVoltagePercent = .15;
 }

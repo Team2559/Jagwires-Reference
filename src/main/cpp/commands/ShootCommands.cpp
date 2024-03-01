@@ -9,13 +9,16 @@ void ShootCommands::Initialize() {
 
   //Start the shooter motors and timer
   shooterSubsystem->SetShooterMotorVoltagePercent(shooter::kShooterMotorVoltagePercent);
+  finished = false;
   timer.Reset();
   timer.Start();
+  
+
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCommands::Execute() {
-  //When the timer has run for 5 seconds set finished to true to stop the motors
+  //When the timer has run for 5 seconds set finished to true to stop the motors 
   if (timer.HasElapsed(5_s)) {
     finished = true;
     shooterSubsystem->StopShooter();

@@ -6,24 +6,24 @@
 
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandHelper.h>
+#include "subsystems/ClimberSubsystem.h"
+#include "Constants.h"
 #include <frc/Timer.h>
-#include "subsystems/ShooterSubsystem.h"
 
-/*
+/**
  * An example command.
  *
  * <p>Note that this extends CommandHelper, rather extending Command
  * directly; this is crucially important, or else the decorator functions in
  * Command will *not* work!
  */
-class ShootCommands
-    : public frc2::CommandHelper<frc2::Command, ShootCommands>
-{
-public:
-  explicit ShootCommands(ShooterSubsystem *shooterSubsystem)
-      : shooterSubsystem{shooterSubsystem}
+class ClimberLowerCommand
+    : public frc2::CommandHelper<frc2::Command, ClimberLowerCommand> {
+ public:
+  explicit ClimberLowerCommand(ClimberSubsystem *climberSubsystem)
+      : climberSubsystem{climberSubsystem}
   {
-    AddRequirements(shooterSubsystem);
+    AddRequirements(climberSubsystem);
   }
 
   void Initialize() override;
@@ -31,8 +31,8 @@ public:
   void End(bool interrupted) override;
   bool IsFinished() override;
 
-private:
-  ShooterSubsystem *shooterSubsystem{nullptr};
-  frc::Timer timer{};
-  bool finished{false};
+  private:
+    ClimberSubsystem *climberSubsystem{nullptr};
+    frc::Timer timer{};
+    bool finished{false};
 };
