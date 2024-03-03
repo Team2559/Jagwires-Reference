@@ -271,8 +271,13 @@ void RobotContainer::ConfigureBindings() noexcept
   m_xboxOperate.A().OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
   m_xboxOperate.B().OnTrue(IntakeEjectCommand(&m_intakeSubsystem).ToPtr());
 
-  // Runs shoot command to move arm into postion, start up the shooting motors and eject the note                     
-  m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
+  // Runs shoot command to move arm into postion, start up the shooting motors and eject the note
+  m_xboxOperate.Y().OnTrue(
+    PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr()
+      .AlongWith(frc2::cmd::Wait(1.5_s) /* Minimum 2s for shooter motors to spool */)
+      .AndThen(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
+      .DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+  );
   
   m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
 
