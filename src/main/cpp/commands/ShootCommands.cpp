@@ -9,9 +9,8 @@ void ShootCommands::Initialize() {
   // Start the shooter motors
   shooterSubsystem->SetShooterMotorVoltagePercent(shooter::kShooterMotorVoltagePercent);
   // Finished will always remain false, as this command is designed to be interrupted when complete
-  finished = false;
-  // timer.Reset();
-  // timer.Start();
+  timer.Reset();
+  timer.Start();
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -28,5 +27,6 @@ void ShootCommands::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool ShootCommands::IsFinished() {
-  return finished;
+  // Fallback if nothing else stops the command
+  return timer.HasElapsed(10_s);
 }

@@ -33,6 +33,5 @@ class IntakeEjectCommand
  
  private: 
     IntakeSubsystem *intakeSubsystem{nullptr};
-    bool finished{false};
     frc::Timer timer{};
 };
