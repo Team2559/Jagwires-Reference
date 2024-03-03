@@ -147,9 +147,16 @@ std::tuple<double, double, double, bool> RobotContainer::GetDriveTeleopControls(
   Finally, the other controller joystick is used for commanding rotation and
   things work out so that this is also an inverted X axis.
   */
+  double LeftTrigAnalogVal = m_xboxDrive.GetLeftTriggerAxis();
   double LeftStickX = -m_xboxDrive.GetLeftY();
   double LeftStickY = -m_xboxDrive.GetLeftX();
   double rightStickRot = -m_xboxDrive.GetRightX();
+  if (LeftTrigAnalogVal > .05)
+  {
+    LeftStickX *= 1.5;
+    LeftStickY *= 1.5;
+  }
+  
 
   if (triggerSpeedEnabled) // scale speed by analog trigger
   {
