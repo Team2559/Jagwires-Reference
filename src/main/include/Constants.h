@@ -29,7 +29,8 @@ namespace physical
     // This is an upper bound, for various reasons.  It needs to be empirically
     // measured.  Half of theoretical free speed is a reasonable starting value
     // (since something in the ballpark is needed here in order to to drive).
-    constexpr units::meters_per_second_t kMaxDriveSpeed = 12.1_fps / 1.25;
+    // 15.1 feet/second for SDS Mk4i L2 Gearing
+    constexpr units::meters_per_second_t kMaxDriveSpeed = 15.1_fps / 1.25;
 
     // For a square drive base, with +/-11.25" x/y coordinates for each of four
     // swerve modules, the radius of the circle going through all modules is:
@@ -39,7 +40,7 @@ namespace physical
     // This is used for rotating the robot in place, about it's center.  This
     // may need to be empirically adjusted, but check kDriveMetersPerRotation
     // before making any adjustment here.
-    constexpr units::meter_t kDriveMetersPerTurningCircle = 99.96_in;
+    constexpr units::meter_t kDriveMetersPerTurningCircle = 108.85_in;
 
     // This is the maximum rotational speed -- not of a swerve module, but of
     // the entire robot.  This is a function of the maximum drive speed and the
