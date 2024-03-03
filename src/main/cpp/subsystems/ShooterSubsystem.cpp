@@ -16,6 +16,6 @@ void ShooterSubsystem::StopShooter() noexcept
 
 void ShooterSubsystem::SetShooterMotorVoltagePercent(const double percent) noexcept
 {
-    m_LeftShooterMotor.SetVoltage(percent * 12.00_V);
-    m_RightShooterMotor.SetVoltage(percent * 12.00_V);
+    m_LeftShooterMotor.Set(percent);
+    m_RightShooterMotor.Set(percent);
 }

@@ -14,5 +14,5 @@ void IntakeSubsystem::StopIntake() noexcept
 
 void IntakeSubsystem::SetSpinMotorVoltagePercent(const double percent) noexcept
 {
-    m_IntakeMotor.SetVoltage(percent * 12_V);
+    m_IntakeMotor.Set(percent);
 }

@@ -152,7 +152,7 @@ namespace intake
     constexpr units::degree_t kIntakeArmPickup = 180.0_deg;
     constexpr units::degree_t kIntakeArmLoad = 0.0_deg;
 
-    constexpr double kIntakeSpinMotorVoltagePercent = .80;
+    constexpr double kIntakeSpinMotorVoltagePercent = .60;
     constexpr double kIntakeSpinMotorEjectVoltagePercent = -.90;
 }
 
@@ -167,7 +167,7 @@ namespace arm
     constexpr double kArmPositionD = .10;
     constexpr double kArmPositionF = 0.0;
 
-    constexpr units::turn_t kShooterToAmpAngle = -50_deg;
+    constexpr units::turn_t kShooterToAmpAngle = -52.5_deg;
     constexpr units::turn_t kShooterToIntakeAngle = -200_deg;
 }
 
@@ -178,22 +178,22 @@ namespace climber
     constexpr bool kClimberMotorIsInverted = false;
     constexpr double kClimberMotorRaiseVoltagePercent = .50;
     constexpr units::second_t kClimberRaiseTimer = 2_s;
-    constexpr double kClimberMotorLowerVoltagePercent = -.75;
+    constexpr double kClimberMotorLowerVoltagePercent = -1.00;
     constexpr units::second_t kClimberLowerTimer = 2_s;
 
     constexpr int kClimberSolenoidCanID = 19;
 
 }
 
-namespace amp 
-{
-    //Bosch motor for extending out and back
-    constexpr int kAmpExtendMotorCanID = 20;
-    constexpr bool kAmpExtendMotorIsInverted = false;
-    constexpr double kAmpExtendMotorVoltagePercent = .15;
+// namespace amp 
+// {
+//     //Bosch motor for extending out and back
+//     constexpr int kAmpExtendMotorCanID = 20;
+//     constexpr bool kAmpExtendMotorIsInverted = false;
+//     constexpr double kAmpExtendMotorVoltagePercent = .15;
 
-    //Johnson Electric for raising and lowering 
-    constexpr int kAmpRaiseMotorCanID = 21;
-    constexpr bool kAmpRaiseMotorIsInverted = false;
-    constexpr double kAmpRaiseMotorVoltagePercent = .15;
-}
+//     //Johnson Electric for raising and lowering 
+//     constexpr int kAmpRaiseMotorCanID = 21;
+//     constexpr bool kAmpRaiseMotorIsInverted = false;
+//     constexpr double kAmpRaiseMotorVoltagePercent = .15;
+// }

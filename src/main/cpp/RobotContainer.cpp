@@ -16,6 +16,7 @@
 #include <frc2/command/InstantCommand.h>
 #include <frc2/command/RunCommand.h>
 #include <frc2/command/Commands.h>
+#include <frc2/command/CommandPtr.h>
 #include "commands/IntakeCommand.h"
 #include "commands/ClimberLowerCommand.h"
 #include "commands/ClimberRaiseCommand.h"
@@ -23,6 +24,11 @@
 #include "commands/ShootCommands.h"
 #include "commands/PIDTransferArmCommand.h"
 #include "commands/IntakeEjectCommand.h"
+//#include "commands/AmpExtendCommand.h"
+//#include "commands/AmpHolderDropCommand.h"
+//#include "commands/AmpHolderGrabCommand.h"
+//#include "commands/AmpRetractCommand.h"
+//#include "commands/AmpHolderStopCommand.h"
 #include "commands/DriveCommands.h"
 
 #include <cmath>
@@ -71,8 +77,9 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // DriveCommand(xspeed, yspeed, rotation, time, &driveSubsystem)
   // will move in the given x and y direction while rotating for time seconds
   // xspeed, yspeed, and rotation will likely be between -1 and 1, but they do not need to be in these bounds
-  return ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
-  .AndThen(DriveCommand(.5, 0, 0, 1_s, &m_driveSubsystem).ToPtr())
+  return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+  .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
+  .AndThen(DriveCommand(.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr())
   .AndThen(DriveCommand(0, 0.0, 0, 1_s, &m_driveSubsystem).ToPtr());
 }
 #pragma endregion
@@ -265,7 +272,7 @@ void RobotContainer::ConfigureBindings() noexcept
   m_xboxOperate.B().OnTrue(IntakeEjectCommand(&m_intakeSubsystem).ToPtr());
 
   // Runs shoot command to move arm into postion, start up the shooting motors and eject the note                     
-  //m_xboxOperate.Y().OnTrue(ShootCommands(&m_shooterSubsystem).ToPtr());
+  m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
   
   m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
 
@@ -279,8 +286,20 @@ void RobotContainer::ConfigureBindings() noexcept
   m_xboxOperate.LeftTrigger().OnTrue(ClimberLowerCommand(&m_climberSubsystem).ToPtr()); //Lower the climber while button is pressed
   m_xboxOperate.LeftTrigger().OnFalse(ClimberStopCommand(&m_climberSubsystem).ToPtr());   // on false stop the climber motor
 
-  // dpadUp.OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
-  // dpadDown.OnTrue(IntakeEjectCommand(&m_intakeSubsystem).ToPtr());
+/* Amp key bindings
+  dpadUp.OnTrue(AmpHolderGrabCommand(&m_ampSubsystem).ToPtr()); //Grabs the note from the intake system
+  dpadUp.OnFalse(AmpHolderStopCommand(&m_ampSubsystem).ToPtr()); //Stops the grabber motors
+
+  dpadDown.OnTrue(AmpHolderDropCommand(&m_ampSubsystem).ToPtr()); //Release the note from the holder
+  dpadDown.OnFalse(AmpHolderStopCommand(&m_ampSubsystem).ToPtr()); //Stops the grabber motors
+
+  dpadRight.OnTrue(AmpExtendCommand(&m_ampSubsystem).ToPtr()); //Extend the amp mechanism
+  dpadRight.OnFalse(AmpExtendCommand(&m_ampSubsystem).ToPtr()); //Stops the extension motors
+
+  dpadLeft.OnTrue(AmpRetractCommand(&m_ampSubsystem).ToPtr()); //Retracts the amp mechanism
+  dpadLeft.OnFalse(AmpRetractCommand(&m_ampSubsystem).ToPtr()); //Stops the extension motors
+  */
+  
 }
 #pragma endregion
 

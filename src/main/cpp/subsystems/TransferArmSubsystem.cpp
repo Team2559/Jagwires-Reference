@@ -17,7 +17,7 @@ void TransferArmSubsystem::StopTransferArm() noexcept
 
 void TransferArmSubsystem::SetArmMotorVoltagePercent(const double percent) noexcept
 {
-    m_TransferArmMotor.SetVoltage(percent * 12_V);
+    m_TransferArmMotor.Set(percent);
 }
 
 units::turn_t TransferArmSubsystem::GetTransferArmPosition() noexcept
