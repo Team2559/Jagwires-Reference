@@ -8,6 +8,7 @@
 #include <frc/geometry/Rotation2d.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
 #include <frc/trajectory/Trajectory.h>
+#include <frc/DriverStation.h>
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
 #include <frc2/command/button/JoystickButton.h>
@@ -24,6 +25,7 @@
 #include "commands/ShootCommands.h"
 #include "commands/PIDTransferArmCommand.h"
 #include "commands/IntakeEjectCommand.h"
+
 //#include "commands/AmpExtendCommand.h"
 //#include "commands/AmpHolderDropCommand.h"
 //#include "commands/AmpHolderGrabCommand.h"
@@ -77,11 +79,33 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // DriveCommand(xspeed, yspeed, rotation, time, &driveSubsystem)
   // will move in the given x and y direction while rotating for time seconds
   // xspeed, yspeed, and rotation will likely be between -1 and 1, but they do not need to be in these bounds
+  std::optional<frc::DriverStation::Alliance> alliance = frc::DriverStation::GetAlliance(); 
+
+
+  if (alliance == frc::DriverStation::Alliance::kRed)
+  {
+    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
+    .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.0, 0, 0.5, .5_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
+  }
+  else if (alliance == frc::DriverStation::Alliance::kBlue)
+  {
+    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
+    .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.0, 0, -0.5, .5_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
+  }
+  // Default (no alliance detected)
   return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
   .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
-  .AndThen(DriveCommand(.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr())
-  .AndThen(DriveCommand(0, 0.0, 0, 1_s, &m_driveSubsystem).ToPtr());
+  .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
+  .AndThen(DriveCommand(0.0, 0, 0.0, .5_s, &m_driveSubsystem).ToPtr())
+  .AndThen(DriveCommand(0.0, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
 }
+  
 #pragma endregion
 
 #pragma region Teleop
@@ -279,8 +303,6 @@ void RobotContainer::ConfigureBindings() noexcept
   m_xboxOperate.B().OnTrue(IntakeEjectCommand(&m_intakeSubsystem).ToPtr());
 
   // Runs shoot command to move arm into postion, start up the shooting motors and eject the note                     
-  m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
-  
   m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
 
   m_xboxOperate.X().OnTrue(PIDPositionTransferArm(arm::kShooterToAmpAngle, &m_transferArmSubsystem).ToPtr()); // Example Only
