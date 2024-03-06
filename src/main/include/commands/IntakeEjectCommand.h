@@ -20,7 +20,7 @@
 class IntakeEjectCommand
     : public frc2::CommandHelper<frc2::Command, IntakeEjectCommand> {
  public:
-  explicit IntakeEjectCommand(IntakeSubsystem *intakeSubsystem)
+  explicit IntakeEjectCommand(bool timeDelay, IntakeSubsystem *intakeSubsystem)
       : intakeSubsystem{intakeSubsystem}
       {
         AddRequirements(intakeSubsystem);
@@ -32,6 +32,7 @@ class IntakeEjectCommand
   bool IsFinished() override;
  
  private: 
+    bool timeDelay{true};
     IntakeSubsystem *intakeSubsystem{nullptr};
     bool finished{false};
     frc::Timer timer{};
