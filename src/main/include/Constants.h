@@ -147,31 +147,27 @@ namespace intake
     constexpr int kIntakeSpinMotorCanID = 16;
     constexpr bool kIntakeSpinMotorIsInverted = true;
 
-    /* NOTE!!!: The intake arm values are NOT final, are subject to change
-    after testing*/
-    constexpr units::degree_t kIntakeArmHome = 90.0_deg;
-    constexpr units::degree_t kIntakeArmPickup = 180.0_deg;
-    constexpr units::degree_t kIntakeArmLoad = 0.0_deg;
-
-    constexpr double kIntakeSpinMotorVoltagePercent = .30;
-    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.80;
-    constexpr bool  timerDelayShooter = true;
-    constexpr bool  timerDelayAmp = false;
+    constexpr double kIntakeSpinMotorVoltagePercent = .60;
+    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.72;
+    constexpr bool timerDelayShooter = true;
+    constexpr bool timerDelayAmp = false;
 }
 
 namespace arm
 {
     // Arm Motor Parameters
     constexpr int kTransferArmMotorCanID = 17;
-    constexpr bool kTransferArmMotorIsInverted = true;
+    constexpr bool kTransferArmMotorIsInverted = false;
+    constexpr units::turn_t kTransferArmEncoderZero = 94.0_deg;
 
     // Arm Controller
-    constexpr double kArmPositionP = 10.0;
+    constexpr double kArmPositionP = 4.0;
     constexpr double kArmPositionD = .10;
     constexpr double kArmPositionF = 0.0;
 
-    constexpr units::turn_t kShooterToAmpAngle = -52.5_deg;
-    constexpr units::turn_t kShooterToIntakeAngle = -200_deg;
+    constexpr units::turn_t kArmToShooterAngle = 56.0_deg;
+    constexpr units::turn_t kArmToAmpAngle = 127.0_deg;
+    constexpr units::turn_t kArmToIntakeAngle = 260_deg;
 }
 
 namespace climber

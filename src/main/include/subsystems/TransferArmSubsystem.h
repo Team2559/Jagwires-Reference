@@ -19,5 +19,6 @@ public:
 
 private:
     rev::CANSparkMax m_TransferArmMotor{arm::kTransferArmMotorCanID, rev::CANSparkMax::MotorType::kBrushless};
-    rev::SparkMaxAlternateEncoder m_encoder = m_TransferArmMotor.GetAlternateEncoder(8192);
+    rev::SparkAbsoluteEncoder m_encoder = m_TransferArmMotor.GetAbsoluteEncoder(rev::SparkAbsoluteEncoder::Type::kDutyCycle);
+    // rev::SparkMaxAlternateEncoder m_encoder = m_TransferArmMotor.GetAlternateEncoder(8192);
 };

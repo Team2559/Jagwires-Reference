@@ -58,9 +58,9 @@ public:
     bool IsFinished() noexcept override { return finished; }
 
 private:
+    DriveSubsystem *driveSubsystem{nullptr};
     float xspeed, yspeed, rotation;
     units::second_t time;
-    DriveSubsystem *driveSubsystem{nullptr};
     frc::Timer timer{};
     bool finished{false};
 };

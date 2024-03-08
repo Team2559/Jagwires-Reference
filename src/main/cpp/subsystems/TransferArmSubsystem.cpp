@@ -5,7 +5,8 @@ TransferArmSubsystem::TransferArmSubsystem() noexcept
 {
     m_TransferArmMotor.SetInverted(arm::kTransferArmMotorIsInverted);
 
-    m_encoder.SetMeasurementPeriod(10);
+    // m_encoder.SetMeasurementPeriod(10);
+    m_encoder.SetZeroOffset(arm::kTransferArmEncoderZero.value());
 
     StopTransferArm();
 }
