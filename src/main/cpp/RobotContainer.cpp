@@ -78,7 +78,7 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // will move in the given x and y direction while rotating for time seconds
   // xspeed, yspeed, and rotation will likely be between -1 and 1, but they do not need to be in these bounds
   return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
-  .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
+  .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
   .AndThen(DriveCommand(.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr())
   .AndThen(DriveCommand(0, 0.0, 0, 1_s, &m_driveSubsystem).ToPtr());
 }
@@ -147,9 +147,16 @@ std::tuple<double, double, double, bool> RobotContainer::GetDriveTeleopControls(
   Finally, the other controller joystick is used for commanding rotation and
   things work out so that this is also an inverted X axis.
   */
+  double LeftTrigAnalogVal = m_xboxDrive.GetLeftTriggerAxis();
   double LeftStickX = -m_xboxDrive.GetLeftY();
   double LeftStickY = -m_xboxDrive.GetLeftX();
   double rightStickRot = -m_xboxDrive.GetRightX();
+  if (LeftTrigAnalogVal > .05)
+  {
+    LeftStickX *= 1.5;
+    LeftStickY *= 1.5;
+  }
+  
 
   if (triggerSpeedEnabled) // scale speed by analog trigger
   {
@@ -269,23 +276,22 @@ void RobotContainer::ConfigureBindings() noexcept
           .ToPtr());
 
   m_xboxOperate.A().OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
-  m_xboxOperate.B().OnTrue(IntakeEjectCommand(&m_intakeSubsystem).ToPtr());
+  m_xboxOperate.B().OnTrue(IntakeEjectCommand(intake::timerDelayAmp, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr());
 
   // Runs shoot command to move arm into postion, start up the shooting motors and eject the note
   m_xboxOperate.Y().OnTrue(
     (
       (
-        PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr()
+        PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()
         .AlongWith(frc2::cmd::Wait(1.0_s) /* Minimum time for shooter motors to spool */)
-      ).AndThen(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
+      ).AndThen(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr())
     ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
   );
   
   m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
 
-  m_xboxOperate.X().OnTrue(PIDPositionTransferArm(arm::kShooterToAmpAngle, &m_transferArmSubsystem).ToPtr()); // Example Only
-  m_xboxOperate.LeftBumper().OnTrue(PIDPositionTransferArm(arm::kShooterToIntakeAngle, &m_transferArmSubsystem).ToPtr()); // Intake
-  m_xboxOperate.RightBumper().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr()); // Shooter
+  m_xboxOperate.LeftBumper().OnTrue(PIDPositionTransferArm(arm::kArmToIntakeAngle, &m_transferArmSubsystem).ToPtr()); // Intake
+  m_xboxOperate.RightBumper().OnTrue(PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()); // Shooter
 
   m_xboxOperate.RightTrigger().OnTrue(ClimberRaiseCommand(&m_climberSubsystem).ToPtr()); // Raise the climber while button is pressed.
   m_xboxOperate.RightTrigger().OnFalse(ClimberStopCommand(&m_climberSubsystem).ToPtr());   // on false stop the climber motor

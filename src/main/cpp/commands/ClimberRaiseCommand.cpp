@@ -20,7 +20,7 @@ void ClimberRaiseCommand::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void ClimberRaiseCommand::Execute() {
   //Start the climber motor to move climbing hook up. 
-  if (solenoidTimer.HasElapsed(.5_s))
+  if (solenoidTimer.HasElapsed(.4_s))
   {
     climberSubsystem->SetClimberMotorVoltagePercent(climber::kClimberMotorRaiseVoltagePercent);
   }
