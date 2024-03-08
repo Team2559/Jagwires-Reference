@@ -78,7 +78,7 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // will move in the given x and y direction while rotating for time seconds
   // xspeed, yspeed, and rotation will likely be between -1 and 1, but they do not need to be in these bounds
   return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
-  .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, &m_intakeSubsystem).ToPtr()))
+  .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
   .AndThen(DriveCommand(.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr())
   .AndThen(DriveCommand(0, 0.0, 0, 1_s, &m_driveSubsystem).ToPtr());
 }
@@ -276,16 +276,16 @@ void RobotContainer::ConfigureBindings() noexcept
           .ToPtr());
 
   m_xboxOperate.A().OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
-  m_xboxOperate.B().OnTrue(IntakeEjectCommand(intake::timerDelayAmp, &m_intakeSubsystem).ToPtr());
+  m_xboxOperate.B().OnTrue(IntakeEjectCommand(intake::timerDelayAmp, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr());
 
   // Runs shoot command to move arm into postion, start up the shooting motors and eject the note                     
   m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr())
-    .AlongWith(IntakeEjectCommand(intake::timerDelayShooter, &m_intakeSubsystem).ToPtr()));
+    .AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()));
 
   //X button for shooting in the amp
   m_xboxOperate.X().OnTrue(PIDPositionTransferArm(arm::kArmToAmpAngle, &m_transferArmSubsystem).ToPtr()
-    .AndThen(IntakeEjectCommand(intake::timerDelayAmp, &m_intakeSubsystem).ToPtr()));
+    .AndThen(IntakeEjectCommand(intake::timerDelayAmp, IntakeMotorCurrent::kCurrentHigh, &m_intakeSubsystem).ToPtr()));
 
   m_xboxOperate.LeftBumper().OnTrue(PIDPositionTransferArm(arm::kArmToIntakeAngle, &m_transferArmSubsystem).ToPtr()); // Intake
   m_xboxOperate.RightBumper().OnTrue(PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()); // Shooter

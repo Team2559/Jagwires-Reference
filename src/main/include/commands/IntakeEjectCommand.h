@@ -10,8 +10,6 @@
 #include "Constants.h"
 #include <frc/Timer.h>
 
-
-
 /**
  * This command is for ejecting the note from the intake.  
  * This can be called by the shootcommand to feed into the shooter 
@@ -20,8 +18,10 @@
 class IntakeEjectCommand
     : public frc2::CommandHelper<frc2::Command, IntakeEjectCommand> {
  public:
-  explicit IntakeEjectCommand(bool timeDelay, IntakeSubsystem *intakeSubsystem)
-      : intakeSubsystem{intakeSubsystem}
+  explicit IntakeEjectCommand(bool timeDelay, IntakeMotorCurrent currentMode, IntakeSubsystem *intakeSubsystem)
+      : timeDelay{timeDelay},
+        currentMode{currentMode},
+        intakeSubsystem{intakeSubsystem}
       {
         AddRequirements(intakeSubsystem);
       }
@@ -31,9 +31,9 @@ class IntakeEjectCommand
   void End(bool interrupted) override;
   bool IsFinished() override;
  
- private: 
+ private:
     bool timeDelay{true};
+    IntakeMotorCurrent currentMode;
     IntakeSubsystem *intakeSubsystem{nullptr};
-    bool finished{false};
     frc::Timer timer{};
 };
