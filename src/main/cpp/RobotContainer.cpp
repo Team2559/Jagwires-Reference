@@ -100,7 +100,7 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   }
   // Default (no alliance detected)
   return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
-  .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
+  .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
   .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
   .AndThen(DriveCommand(0.0, 0, 0.0, .5_s, &m_driveSubsystem).ToPtr())
   .AndThen(DriveCommand(0.0, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
@@ -300,14 +300,22 @@ void RobotContainer::ConfigureBindings() noexcept
           .ToPtr());
 
   m_xboxOperate.A().OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
-  m_xboxOperate.B().OnTrue(IntakeEjectCommand(&m_intakeSubsystem).ToPtr());
+  m_xboxOperate.B().OnTrue(IntakeEjectCommand(intake::timerDelayAmp, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr());
 
-  // Runs shoot command to move arm into postion, start up the shooting motors and eject the note                     
+  // Runs shoot command to move arm into postion, start up the shooting motors and eject the note
+  m_xboxOperate.Y().OnTrue(
+    (
+      (
+        PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()
+        .AlongWith(frc2::cmd::Wait(1.0_s) /* Minimum time for shooter motors to spool */)
+      ).AndThen(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr())
+    ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+  );
+  
   m_xboxOperate.Y().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr().AndThen(ShootCommands(&m_shooterSubsystem).ToPtr()).AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()));
 
-  m_xboxOperate.X().OnTrue(PIDPositionTransferArm(arm::kShooterToAmpAngle, &m_transferArmSubsystem).ToPtr()); // Example Only
-  m_xboxOperate.LeftBumper().OnTrue(PIDPositionTransferArm(arm::kShooterToIntakeAngle, &m_transferArmSubsystem).ToPtr()); // Intake
-  m_xboxOperate.RightBumper().OnTrue(PIDPositionTransferArm(0_deg, &m_transferArmSubsystem).ToPtr()); // Shooter
+  m_xboxOperate.LeftBumper().OnTrue(PIDPositionTransferArm(arm::kArmToIntakeAngle, &m_transferArmSubsystem).ToPtr()); // Intake
+  m_xboxOperate.RightBumper().OnTrue(PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()); // Shooter
 
   m_xboxOperate.RightTrigger().OnTrue(ClimberRaiseCommand(&m_climberSubsystem).ToPtr()); // Raise the climber while button is pressed.
   m_xboxOperate.RightTrigger().OnFalse(ClimberStopCommand(&m_climberSubsystem).ToPtr());   // on false stop the climber motor
