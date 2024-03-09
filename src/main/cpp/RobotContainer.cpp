@@ -175,10 +175,11 @@ std::tuple<double, double, double, bool> RobotContainer::GetDriveTeleopControls(
   double LeftStickX = -m_xboxDrive.GetLeftY();
   double LeftStickY = -m_xboxDrive.GetLeftX();
   double rightStickRot = -m_xboxDrive.GetRightX();
-  if (LeftTrigAnalogVal > .05)
+
+  if (LeftTrigAnalogVal < .05)
   {
-    LeftStickX *= 1.5;
-    LeftStickY *= 1.5;
+    LeftStickX *= physical::kSlowDrivePercent;
+    LeftStickY *= physical::kSlowDrivePercent;
   }
   
 
@@ -208,11 +209,6 @@ std::tuple<double, double, double, bool> RobotContainer::GetDriveTeleopControls(
   }
 
   rightStickRot = ConditionRawJoystickInput(rightStickRot);
-
-  // TODO: decide if this is still needed
-  LeftStickX *= 2.0;
-  LeftStickY *= 2.0;
-  rightStickRot *= 1.6;
 
   return std::make_tuple(LeftStickX, LeftStickY, rightStickRot, m_fieldOriented);
 }

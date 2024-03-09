@@ -1066,16 +1066,16 @@ void DriveSubsystem::SetModuleStates(std::array<frc::SwerveModuleState, 4> &desi
   rearRight.speed *= m_limit;
 
   // To avoid brownout, reduce power when wheels are too far out of position.
-  const units::angle::degree_t frontLeftTurningError = m_frontLeftSwerveModule->GetTurningPosition() - frontLeft.angle.Degrees();
-  const units::angle::degree_t frontRightTurningError = m_frontRightSwerveModule->GetTurningPosition() - frontRight.angle.Degrees();
-  const units::angle::degree_t rearLeftTurningError = m_rearLeftSwerveModule->GetTurningPosition() - rearLeft.angle.Degrees();
-  const units::angle::degree_t rearRightTurningError = m_rearRightSwerveModule->GetTurningPosition() - rearRight.angle.Degrees();
-  const double totalTurningError = std::abs(frontLeftTurningError.to<double>()) +
-                                   std::abs(frontRightTurningError.to<double>()) +
-                                   std::abs(rearLeftTurningError.to<double>()) +
-                                   std::abs(rearRightTurningError.to<double>());
+  const units::angle::degree_t frontLeftTurningError = frc::AngleModulus((m_frontLeftSwerveModule->GetTurningPosition() - frontLeft.angle.Degrees()) * 2) / 2;
+  const units::angle::degree_t frontRightTurningError = frc::AngleModulus((m_frontRightSwerveModule->GetTurningPosition() - frontRight.angle.Degrees()) * 2) / 2;
+  const units::angle::degree_t rearLeftTurningError = frc::AngleModulus((m_rearLeftSwerveModule->GetTurningPosition() - rearLeft.angle.Degrees()) * 2) / 2;
+  const units::angle::degree_t rearRightTurningError = frc::AngleModulus((m_rearRightSwerveModule->GetTurningPosition() - rearRight.angle.Degrees()) * 2) / 2;
+  const units::angle::degree_t totalTurningError = units::math::abs(frontLeftTurningError) +
+                                                   units::math::abs(frontRightTurningError) +
+                                                   units::math::abs(rearLeftTurningError) +
+                                                   units::math::abs(rearRightTurningError);
 
-  if (totalTurningError > 10.0)
+  if (totalTurningError > 30.0_deg)
   {
     frontLeft.speed *= 0.5;
     frontRight.speed *= 0.5;

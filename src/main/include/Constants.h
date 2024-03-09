@@ -31,6 +31,7 @@ namespace physical
     // (since something in the ballpark is needed here in order to to drive).
     // 15.1 feet/second for SDS Mk4i L2 Gearing
     constexpr units::meters_per_second_t kMaxDriveSpeed = 15.1_fps / 1.25;
+    constexpr double kSlowDrivePercent = 0.75;
 
     // For a square drive base, with +/-11.25" x/y coordinates for each of four
     // swerve modules, the radius of the circle going through all modules is:
@@ -101,7 +102,7 @@ namespace pidf
 
     constexpr double kDrivePositionMaxVelocity = 5700.0;     // Rotations per minute.
     constexpr double kDrivePositionMaxAcceleration = 1000.0; // Rotations per minute per second.
-    constexpr double kDrivePositionP = 0.000;
+    constexpr double kDrivePositionP = 0.100;
     constexpr double kDrivePositionF = 0.0;
     constexpr double kDrivePositionI = 0.0;
     constexpr double kDrivePositionIZ = 0.0;
@@ -112,7 +113,7 @@ namespace pidf
     constexpr double kDriveVelocityMaxVelocity = 5700.0;
     constexpr double kDriveVelocityMaxAcceleration = 1000.0;
     constexpr double kDriveVelocityMaxJerk = 1.0;
-    constexpr double kDriveVelocityP = 0.0;
+    constexpr double kDriveVelocityP = 0.1;
     constexpr double kDriveVelocityF = 0.0;
     constexpr double kDriveVelocityI = 0.0;
     constexpr double kDriveVelocityIZ = 0.0;
