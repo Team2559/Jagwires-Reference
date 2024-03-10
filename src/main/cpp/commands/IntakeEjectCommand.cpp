@@ -11,24 +11,18 @@ void IntakeEjectCommand::Initialize() {
      Set finished to false to allow multiple calls of this command
   */
   
-  
-  finished = false;
+  if (currentMode == kCurrentHigh) {
+    intakeSubsystem->SetSpinMotorCurrent(kCurrentHigh);
+  }
+
   timer.Reset();
   timer.Start();
-  
 }
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeEjectCommand::Execute() {
-  
-  if (timer.HasElapsed(2_s)){
+  if (!timeDelay || timer.HasElapsed(1.2_s)) {
     intakeSubsystem->SetSpinMotorVoltagePercent(intake::kIntakeSpinMotorEjectVoltagePercent);
-  }
-
-  //Run the intake motors in reverse for 2 seconds then stop the intake
-  if (timer.HasElapsed(4_s)){
-    finished = true;
-    intakeSubsystem->StopIntake();
   }
 }
 
@@ -36,9 +30,13 @@ void IntakeEjectCommand::Execute() {
 void IntakeEjectCommand::End(bool interrupted) {
   //Stop the intake motors
   intakeSubsystem->StopIntake();
+
+  if (currentMode == kCurrentHigh) {
+    intakeSubsystem->SetSpinMotorCurrent(kCurrentLow);
+  }
 }
 
 // Returns true when the command should end.
 bool IntakeEjectCommand::IsFinished() {
-  return finished;
+  return timeDelay ? timer.HasElapsed(3_s) : timer.HasElapsed(2_s);
 }
