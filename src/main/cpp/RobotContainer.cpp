@@ -76,9 +76,9 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // DriveCommand(xspeed, yspeed, rotation, time, &driveSubsystem)
   // will move in the given x and y direction while rotating for time seconds
   // xspeed, yspeed, and rotation will likely be between -1 and 1, but they do not need to be in these bounds
-  return ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
-  .AndThen(DriveCommand(0.0, 0.0, .3, 1.5_s, &m_driveSubsystem).ToPtr())
-  .AndThen(DriveCommand(0.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
+  // return ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
+  // .AndThen(DriveCommand(0.0, 0.0, .3, 1.5_s, &m_driveSubsystem).ToPtr())
+  // .AndThen(DriveCommand(0.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
 
 
   //declaring the values used to set an autonomous mode
@@ -96,45 +96,45 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
 
   if (m_autoSelected == kBlueLeftAuto)
   {
-    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.0, 0, 0.7, 1_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.0, 0, -0.7, 1_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kBlueMiddleAuto)
   {
-    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(1.0, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.7, 0, 0, 2.5_s, &m_driveSubsystem).ToPtr());
+    .AndThen(DriveCommand(0.7, 0, 0, 1.3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kBlueRightAuto)
   {
-    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
     .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.0, 0, -0.5, .5_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedLeftAuto)
   {
-    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
     .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.0, 0, 0.5, .5_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedMiddleAuto)
   {
-    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(.7, 0, 0, 1.0_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.7, 0, 0, 2.5_s, &m_driveSubsystem).ToPtr());
+    .AndThen(DriveCommand(0.7, 0, 0, 1.3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedRightAuto)
   {
-    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.0, 0, -0.7, 1_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.0, 0, 0.7, 1_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else
   {
-    return DriveCommand(.7, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
-    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.7, 0, 0, 1.5_s, &m_driveSubsystem).ToPtr());
+    return DriveCommand(1.0, 0, 0, .5_s, &m_driveSubsystem).ToPtr();
+    // .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
+    // .AndThen(DriveCommand(0.7, 0, 0, 1.5_s, &m_driveSubsystem).ToPtr());
   }
   /*
 
