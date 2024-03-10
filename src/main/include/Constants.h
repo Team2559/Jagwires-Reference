@@ -31,6 +31,7 @@ namespace physical
     // (since something in the ballpark is needed here in order to to drive).
     // 15.1 feet/second for SDS Mk4i L2 Gearing
     constexpr units::meters_per_second_t kMaxDriveSpeed = 15.1_fps / 1.25;
+    constexpr double kSlowDrivePercent = 0.75;
 
     // For a square drive base, with +/-11.25" x/y coordinates for each of four
     // swerve modules, the radius of the circle going through all modules is:
@@ -101,7 +102,7 @@ namespace pidf
 
     constexpr double kDrivePositionMaxVelocity = 5700.0;     // Rotations per minute.
     constexpr double kDrivePositionMaxAcceleration = 1000.0; // Rotations per minute per second.
-    constexpr double kDrivePositionP = 0.000;
+    constexpr double kDrivePositionP = 0.100;
     constexpr double kDrivePositionF = 0.0;
     constexpr double kDrivePositionI = 0.0;
     constexpr double kDrivePositionIZ = 0.0;
@@ -112,7 +113,7 @@ namespace pidf
     constexpr double kDriveVelocityMaxVelocity = 5700.0;
     constexpr double kDriveVelocityMaxAcceleration = 1000.0;
     constexpr double kDriveVelocityMaxJerk = 1.0;
-    constexpr double kDriveVelocityP = 0.0;
+    constexpr double kDriveVelocityP = 0.1;
     constexpr double kDriveVelocityF = 0.0;
     constexpr double kDriveVelocityI = 0.0;
     constexpr double kDriveVelocityIZ = 0.0;
@@ -147,29 +148,27 @@ namespace intake
     constexpr int kIntakeSpinMotorCanID = 16;
     constexpr bool kIntakeSpinMotorIsInverted = true;
 
-    /* NOTE!!!: The intake arm values are NOT final, are subject to change
-    after testing*/
-    constexpr units::degree_t kIntakeArmHome = 90.0_deg;
-    constexpr units::degree_t kIntakeArmPickup = 180.0_deg;
-    constexpr units::degree_t kIntakeArmLoad = 0.0_deg;
-
     constexpr double kIntakeSpinMotorVoltagePercent = .60;
-    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.85;
+    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.66;
+    constexpr bool timerDelayShooter = true;
+    constexpr bool timerDelayAmp = false;
 }
 
 namespace arm
 {
     // Arm Motor Parameters
     constexpr int kTransferArmMotorCanID = 17;
-    constexpr bool kTransferArmMotorIsInverted = true;
+    constexpr bool kTransferArmMotorIsInverted = false;
+    constexpr units::turn_t kTransferArmEncoderZero = 94.0_deg;
 
     // Arm Controller
-    constexpr double kArmPositionP = 10.0;
+    constexpr double kArmPositionP = 4.0;
     constexpr double kArmPositionD = .10;
     constexpr double kArmPositionF = 0.0;
 
-    constexpr units::turn_t kShooterToAmpAngle = -52.5_deg;
-    constexpr units::turn_t kShooterToIntakeAngle = -200_deg;
+    constexpr units::turn_t kArmToShooterAngle = 56.0_deg;
+    constexpr units::turn_t kArmToAmpAngle = 127.0_deg;
+    constexpr units::turn_t kArmToIntakeAngle = 260_deg;
 }
 
 namespace climber

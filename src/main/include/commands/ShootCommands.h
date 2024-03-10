@@ -34,5 +34,4 @@ public:
 private:
   ShooterSubsystem *shooterSubsystem{nullptr};
   frc::Timer timer{};
-  bool finished{false};
 };
