@@ -11,6 +11,8 @@
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/shuffleboard/ShuffleboardTab.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandScheduler.h>
@@ -61,10 +63,29 @@ void RobotContainer::AutonomousInit() noexcept
                                                         {&m_shooterSubsystem}));
   m_infrastructureSubsystem.SetDefaultCommand(frc2::RunCommand([&]() -> void {},
                                                                {&m_infrastructureSubsystem}));
-  
+
+
+
+  frc::ShuffleboardTab &shuffleboardTab = frc::Shuffleboard::GetTab("Auto");
   //m_chooser.AddOption()
   
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+
+  frc::Shuffleboard::SelectTab("Auto");
+  //declaring the values used to set an autonomous mode
+  m_chooser.SetDefaultOption(kAutoDefault, kAutoDefault);
+  m_chooser.AddOption(kBlueLeftAuto, kBlueLeftAuto);
+  m_chooser.AddOption(kBlueMiddleAuto, kBlueMiddleAuto);
+  m_chooser.AddOption(kBlueRightAuto, kBlueRightAuto);
+  m_chooser.AddOption(kRedLeftAuto, kRedLeftAuto);
+  m_chooser.AddOption(kRedMiddleAuto, kRedMiddleAuto);
+  m_chooser.AddOption(kRedRightAuto, kRedRightAuto);
+
+  frc::Shuffleboard::GetTab("Auto")
+    .Add("Auto Chooser", m_chooser)
+    .WithPosition(0, 0)
+    .WithSize(2, 1);
+  m_autoSelected = m_chooser.GetSelected();
+  fmt::print("Auto selected: {}\n", m_autoSelected);
 }
 
 void RobotContainer::AutonomousPeriodic() noexcept {}
@@ -79,20 +100,6 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // return ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.0, 0.0, .3, 1.5_s, &m_driveSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
-
-
-  //declaring the values used to set an autonomous mode
-  m_chooser.SetDefaultOption(kAutoDefault, kAutoDefault);
-  m_chooser.AddOption(kBlueLeftAuto, kBlueLeftAuto);
-  m_chooser.AddOption(kBlueMiddleAuto, kBlueMiddleAuto);
-  m_chooser.AddOption(kBlueRightAuto, kBlueRightAuto);
-  m_chooser.AddOption(kRedLeftAuto, kRedLeftAuto);
-  m_chooser.AddOption(kRedMiddleAuto, kRedMiddleAuto);
-  m_chooser.AddOption(kRedRightAuto, kRedRightAuto);
-
-  frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
-  m_autoSelected = m_chooser.GetSelected();
-  fmt::print("Auto selected: {}\n", m_autoSelected);
 
   if (m_autoSelected == kBlueLeftAuto)
   {

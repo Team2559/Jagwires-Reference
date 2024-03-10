@@ -17,6 +17,7 @@
 #include "subsystems/ClimberSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 #include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/shuffleboard/ShuffleboardTab.h>
 
 #include <memory>
 #include <tuple>
