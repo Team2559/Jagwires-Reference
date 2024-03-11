@@ -303,7 +303,7 @@ void RobotContainer::ConfigureBindings() noexcept
     (
       (
         PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()
-        .AlongWith(frc2::cmd::Wait(1.0_s) /* Minimum time for shooter motors to spool */)
+        .AlongWith(frc2::cmd::Wait(.75_s) /* Minimum time for shooter motors to spool */)
       ).AndThen(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr())
     ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
   );
@@ -321,13 +321,17 @@ void RobotContainer::ConfigureBindings() noexcept
   m_xboxOperate.LeftTrigger().OnTrue(ClimberLowerCommand(&m_climberSubsystem).ToPtr()); //Lower the climber while button is pressed
   m_xboxOperate.LeftTrigger().OnFalse(ClimberStopCommand(&m_climberSubsystem).ToPtr());   // on false stop the climber motor
 
+  //Code for manual shooting process
+  //Starts shooter motors
+  dpadUp.OnTrue(frc2::InstantCommand([&]() -> void {m_shooterSubsystem.SetShooterMotorVoltagePercent(shooter::kShooterMotorVoltagePercent);}, {}).ToPtr());
+
+  //Stops shooter motors 
+  dpadDown.OnTrue(frc2::InstantCommand([&]() -> void {m_shooterSubsystem.StopShooter();}, {}).ToPtr());
+
+  //dpadDown.OnTrue(AmpHolderDropCommand(&m_ampSubsystem).ToPtr()); //Release the note from the holder
+  //dpadDown.OnFalse(AmpHolderStopCommand(&m_ampSubsystem).ToPtr()); //Stops the grabber motors
+
 /* Amp key bindings
-  dpadUp.OnTrue(AmpHolderGrabCommand(&m_ampSubsystem).ToPtr()); //Grabs the note from the intake system
-  dpadUp.OnFalse(AmpHolderStopCommand(&m_ampSubsystem).ToPtr()); //Stops the grabber motors
-
-  dpadDown.OnTrue(AmpHolderDropCommand(&m_ampSubsystem).ToPtr()); //Release the note from the holder
-  dpadDown.OnFalse(AmpHolderStopCommand(&m_ampSubsystem).ToPtr()); //Stops the grabber motors
-
   dpadRight.OnTrue(AmpExtendCommand(&m_ampSubsystem).ToPtr()); //Extend the amp mechanism
   dpadRight.OnFalse(AmpExtendCommand(&m_ampSubsystem).ToPtr()); //Stops the extension motors
 

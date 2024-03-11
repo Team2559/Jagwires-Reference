@@ -148,7 +148,7 @@ namespace intake
     constexpr int kIntakeSpinMotorCanID = 16;
     constexpr bool kIntakeSpinMotorIsInverted = true;
 
-    constexpr double kIntakeSpinMotorVoltagePercent = .60;
+    constexpr double kIntakeSpinMotorVoltagePercent = .70;
     constexpr double kIntakeSpinMotorEjectVoltagePercent = -.66;
     constexpr bool timerDelayShooter = true;
     constexpr bool timerDelayAmp = false;
@@ -166,7 +166,7 @@ namespace arm
     constexpr double kArmPositionD = .10;
     constexpr double kArmPositionF = 0.0;
 
-    constexpr units::turn_t kArmToShooterAngle = 56.0_deg;
+    constexpr units::turn_t kArmToShooterAngle = 59.0_deg;
     constexpr units::turn_t kArmToAmpAngle = 127.0_deg;
     constexpr units::turn_t kArmToIntakeAngle = 260_deg;
 }

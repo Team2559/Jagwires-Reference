@@ -21,7 +21,7 @@ void IntakeEjectCommand::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeEjectCommand::Execute() {
-  if (!timeDelay || timer.HasElapsed(1.2_s)) {
+  if (!timeDelay || timer.HasElapsed(0.75_s)) {
     intakeSubsystem->SetSpinMotorVoltagePercent(intake::kIntakeSpinMotorEjectVoltagePercent);
   }
 }
