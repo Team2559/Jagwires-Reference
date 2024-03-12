@@ -6,32 +6,27 @@
 
 // Called when the command is initially scheduled.
 void ShootCommands::Initialize() {
-
-  //Start the shooter motors and timer
+  // Start the shooter motors
   shooterSubsystem->SetShooterMotorVoltagePercent(shooter::kShooterMotorVoltagePercent);
-  finished = false;
+  // Finished will always remain false, as this command is designed to be interrupted when complete
   timer.Reset();
   timer.Start();
-  
-
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ShootCommands::Execute() {
-  //When the timer has run for 5 seconds set finished to true to stop the motors 
-  if (timer.HasElapsed(5_s)) {
-    finished = true;
-    shooterSubsystem->StopShooter();
-    }
+  // While the command is active, run the shooter motors
+  shooterSubsystem->SetShooterMotorVoltagePercent(shooter::kShooterMotorVoltagePercent);
 }
 
 // Called once the command ends or is interrupted.
 void ShootCommands::End(bool interrupted) {
-  //Stop the shooter motors
+  // Stop the shooter motors
   shooterSubsystem->StopShooter();
 }
 
 // Returns true when the command should end.
 bool ShootCommands::IsFinished() {
-  return finished;
+  // Fallback if nothing else stops the command
+  return timer.HasElapsed(10_s);
 }
