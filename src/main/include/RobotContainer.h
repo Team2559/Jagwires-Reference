@@ -71,6 +71,7 @@ private:
   bool m_lock{false};
   bool triggerSpeedEnabled{false};
   
+  // sets the controllers to USB input
   frc2::CommandXboxController m_xboxDrive{0};
   frc2::CommandXboxController m_xboxOperate{1};
   // create dpad buttons

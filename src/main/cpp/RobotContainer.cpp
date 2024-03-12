@@ -64,11 +64,15 @@ void RobotContainer::AutonomousInit() noexcept
   m_infrastructureSubsystem.SetDefaultCommand(frc2::RunCommand([&]() -> void {},
                                                                {&m_infrastructureSubsystem}));
 
+<<<<<<< Updated upstream
 
 
   frc::ShuffleboardTab &shuffleboardTab = frc::Shuffleboard::GetTab("Auto");
   //m_chooser.AddOption()
   
+=======
+  frc::ShuffleboardTab &shuffleboardTab = frc::Shuffleboard::GetTab("Auto");
+>>>>>>> Stashed changes
 
   frc::Shuffleboard::SelectTab("Auto");
   //declaring the values used to set an autonomous mode
@@ -86,6 +90,10 @@ void RobotContainer::AutonomousInit() noexcept
     .WithSize(2, 1);
   m_autoSelected = m_chooser.GetSelected();
   fmt::print("Auto selected: {}\n", m_autoSelected);
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 }
 
 void RobotContainer::AutonomousPeriodic() noexcept {}
@@ -97,6 +105,7 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // DriveCommand(xspeed, yspeed, rotation, time, &driveSubsystem)
   // will move in the given x and y direction while rotating for time seconds
   // xspeed, yspeed, and rotation will likely be between -1 and 1, but they do not need to be in these bounds
+<<<<<<< Updated upstream
   // return ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.0, 0.0, .3, 1.5_s, &m_driveSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
@@ -151,7 +160,53 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   red left of speaker
   
   std::optional<frc::DriverStation::Alliance> alliance = frc::DriverStation::GetAlliance(); 
+=======
+  //std::optional<frc::DriverStation::Alliance> alliance = frc::DriverStation::GetAlliance(); 
+>>>>>>> Stashed changes
 
+  if (m_autoSelected == kBlueLeftAuto)
+  {
+    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
+      .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+      .AndThen(DriveCommand(0.0, 0, -0.7, 1_s, &m_driveSubsystem).ToPtr()).AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
+  }else if(m_autoSelected == kBlueMiddleAuto)
+  {
+    return DriveCommand(1.0, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    .AndThen(DriveCommand(0.7, 0, 0, 1.3_s, &m_driveSubsystem).ToPtr());
+  }else if(m_autoSelected == kBlueRightAuto)
+  {
+    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
+      .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+      .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
+      .AndThen(DriveCommand(0.0, 0, -0.5, .5_s, &m_driveSubsystem).ToPtr())
+      .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
+  }else if(m_autoSelected == kRedLeftAuto)
+  {
+    return DriveCommand(0.7, 0, 0, 0.8_s, &m_driveSubsystem).ToPtr()
+      .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+      .AndThen(DriveCommand(0.7, 0, 0, 0.7_s, &m_driveSubsystem).ToPtr())
+      .AndThen(DriveCommand(0, 0, 0.5, 0.5_s, &m_driveSubsystem).ToPtr())
+      .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
+  }else if(m_autoSelected == kRedMiddleAuto)
+  {
+    return DriveCommand(1.0, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+      .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+      .AndThen(DriveCommand(0.7, 0, 0, 1.3_s, &m_driveSubsystem).ToPtr());
+  }else if(m_autoSelected == kRedRightAuto)
+  {
+    return DriveCommand(0.7, 0, 0, 0.8_s, &m_driveSubsystem).ToPtr()
+      .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+      .AndThen(DriveCommand(0, 0, 0.7, 1_s, &m_driveSubsystem).ToPtr())
+      .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
+  }else
+  {
+    return DriveCommand(1.0, 0, 0, 0.5_s, &m_driveSubsystem).ToPtr()
+      .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+      .AndThen(DriveCommand(0.7, 0, 0, 1.5_s, &m_driveSubsystem).ToPtr());
+  }
+
+  /* Old code for reading alliance selection and using that to determine the autonomous activity
 
   if (alliance == frc::DriverStation::Alliance::kRed)
   {
@@ -174,8 +229,12 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr()))
   .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
   .AndThen(DriveCommand(0.0, 0, 0.0, .5_s, &m_driveSubsystem).ToPtr())
+<<<<<<< Updated upstream
   .AndThen(DriveCommand(0.0, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
   */
+=======
+  .AndThen(DriveCommand(0.0, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr()); */
+>>>>>>> Stashed changes
 }
 #pragma endregion
 
