@@ -27,6 +27,8 @@ void IntakeCommand::Execute() {
   if (limit1.Get() or limit2.Get()){
     finished = true;
     intakeSubsystem->StopIntake();
+    frc::Shuffleboard::GetTab("Auto").Add("Intake Triggered", limit1.Get() || limit2.Get())
+      .WithPosition(200, 10);
   }
 }
 

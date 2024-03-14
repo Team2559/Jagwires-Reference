@@ -11,9 +11,6 @@
 #include <frc/DriverStation.h>
 #include <frc/trajectory/TrajectoryConfig.h>
 #include <frc/trajectory/TrajectoryGenerator.h>
-#include <frc/smartdashboard/SmartDashboard.h>
-#include <frc/shuffleboard/Shuffleboard.h>
-#include <frc/shuffleboard/ShuffleboardTab.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc2/command/Command.h>
 #include <frc2/command/CommandScheduler.h>
@@ -71,29 +68,6 @@ void RobotContainer::AutonomousInit() noexcept
                                                         {&m_shooterSubsystem}));
   m_infrastructureSubsystem.SetDefaultCommand(frc2::RunCommand([&]() -> void {},
                                                                {&m_infrastructureSubsystem}));
-
-
-
-  frc::ShuffleboardTab &shuffleboardTab = frc::Shuffleboard::GetTab("Auto");
-  //m_chooser.AddOption()
-  
-
-  frc::Shuffleboard::SelectTab("Auto");
-  //declaring the values used to set an autonomous mode
-  m_chooser.SetDefaultOption(kAutoDefault, kAutoDefault);
-  m_chooser.AddOption(kBlueLeftAuto, kBlueLeftAuto);
-  m_chooser.AddOption(kBlueMiddleAuto, kBlueMiddleAuto);
-  m_chooser.AddOption(kBlueRightAuto, kBlueRightAuto);
-  m_chooser.AddOption(kRedLeftAuto, kRedLeftAuto);
-  m_chooser.AddOption(kRedMiddleAuto, kRedMiddleAuto);
-  m_chooser.AddOption(kRedRightAuto, kRedRightAuto);
-
-  frc::Shuffleboard::GetTab("Auto")
-    .Add("Auto Chooser", m_chooser)
-    .WithPosition(0, 0)
-    .WithSize(2, 1);
-  m_autoSelected = m_chooser.GetSelected();
-  fmt::print("Auto selected: {}\n", m_autoSelected);
 }
 
 void RobotContainer::AutonomousPeriodic() noexcept {}
