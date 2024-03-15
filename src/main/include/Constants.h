@@ -149,7 +149,7 @@ namespace intake
     constexpr bool kIntakeSpinMotorIsInverted = true;
 
     constexpr double kIntakeSpinMotorVoltagePercent = .60;
-    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.66;
+    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.68;
     constexpr bool timerDelayShooter = true;
     constexpr bool timerDelayAmp = false;
 }

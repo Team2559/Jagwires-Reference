@@ -4,6 +4,8 @@
 
 #include "commands/IntakeEjectCommand.h"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 
 // Called when the command is initially scheduled.
 void IntakeEjectCommand::Initialize() {
@@ -17,6 +19,8 @@ void IntakeEjectCommand::Initialize() {
 
   timer.Reset();
   timer.Start();
+
+  frc::SmartDashboard::PutBoolean("Intake", false);
 }
 
 // Called repeatedly when this Command is scheduled to run

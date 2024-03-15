@@ -10,6 +10,7 @@
 #include <frc/shuffleboard/ShuffleboardLayout.h>
 #include <frc/shuffleboard/ShuffleboardTab.h>
 #include <frc/shuffleboard/SimpleWidget.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 // Called when the command is initially scheduled.
 void IntakeCommand::Initialize() {
@@ -18,6 +19,7 @@ void IntakeCommand::Initialize() {
   */
   intakeSubsystem->SetSpinMotorVoltagePercent(intake::kIntakeSpinMotorVoltagePercent);
   finished = false;
+  frc::SmartDashboard::PutBoolean("Intake", false);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -27,8 +29,8 @@ void IntakeCommand::Execute() {
   if (limit1.Get() or limit2.Get()){
     finished = true;
     intakeSubsystem->StopIntake();
-    frc::Shuffleboard::GetTab("Auto").Add("Intake Triggered", limit1.Get() || limit2.Get())
-      .WithPosition(200, 10);
+    frc::SmartDashboard::PutBoolean("Intake", true);
+
   }
 }
 

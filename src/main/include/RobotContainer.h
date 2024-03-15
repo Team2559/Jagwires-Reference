@@ -42,7 +42,7 @@ public:
   void AutonomousInit() noexcept;
   void AutonomousPeriodic() noexcept;
   void AutonomousExit() noexcept;
-  std::optional<frc2::CommandPtr> GetAutonomousCommand() noexcept;
+  std::optional<frc2::CommandPtr> GetAutonomousCommand() noexcept; 
   frc::SendableChooser<std::string> m_chooser;
   const std::string kAutoDefault = "Default";
   const std::string kBlueLeftAuto = "Blue Left";
@@ -71,7 +71,7 @@ private:
   bool m_lock{false};
   bool triggerSpeedEnabled{false};
   
-  // sets the controllers to USB input
+// sets the controllers to USB input
   frc2::CommandXboxController m_xboxDrive{0};
   frc2::CommandXboxController m_xboxOperate{1};
   // create dpad buttons

@@ -16,6 +16,7 @@ void Robot::RobotInit() noexcept
 
   frc::DataLogManager::Start();
   frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
+  
 }
 
 /**
