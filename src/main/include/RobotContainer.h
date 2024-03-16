@@ -42,8 +42,7 @@ public:
   void AutonomousInit() noexcept;
   void AutonomousPeriodic() noexcept;
   void AutonomousExit() noexcept;
-  std::optional<frc2::CommandPtr> GetAutonomousCommand() noexcept; 
-  frc::SendableChooser<std::string> m_chooser;
+  std::optional<frc2::CommandPtr> GetAutonomousCommand(std::string m_autoSelected) noexcept; 
   const std::string kAutoDefault = "Default";
   const std::string kBlueLeftAuto = "Blue Left";
   const std::string kBlueMiddleAuto = "Blue Middle";
@@ -51,7 +50,6 @@ public:
   const std::string kRedLeftAuto = "Red Left";
   const std::string kRedMiddleAuto = "Red Middle";
   const std::string kRedRightAuto = "Red Right";
-  std::string m_autoSelected;
 #pragma endregion
 
 #pragma region Teleop

@@ -75,7 +75,7 @@ void RobotContainer::AutonomousPeriodic() noexcept {}
 
 void RobotContainer::AutonomousExit() noexcept {}
 
-std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
+std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string m_autoSelected) noexcept
 {
   // DriveCommand(xspeed, yspeed, rotation, time, &driveSubsystem)
   // will move in the given x and y direction while rotating for time seconds
@@ -83,8 +83,6 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // return ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.0, 0.0, .3, 1.5_s, &m_driveSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
-
-  m_autoSelected = m_chooser.GetSelected(); 
 
   if (m_autoSelected == kBlueLeftAuto)
   {

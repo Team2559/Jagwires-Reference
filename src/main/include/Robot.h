@@ -39,8 +39,6 @@ public:
   const std::string kRedLeftAuto = "Red Left";
   const std::string kRedMiddleAuto = "Red Middle";
   const std::string kRedRightAuto = "Red Right";
-  //std::string m_autoSelected;
-
 
 private:
   std::optional<frc2::CommandPtr> m_autonomousCommand;
