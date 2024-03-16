@@ -17,6 +17,7 @@
 #include "subsystems/ClimberSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
 #include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/shuffleboard/ShuffleboardTab.h>
 
 #include <memory>
 #include <tuple>
@@ -41,7 +42,14 @@ public:
   void AutonomousInit() noexcept;
   void AutonomousPeriodic() noexcept;
   void AutonomousExit() noexcept;
-  std::optional<frc2::CommandPtr> GetAutonomousCommand() noexcept;
+  std::optional<frc2::CommandPtr> GetAutonomousCommand(std::string m_autoSelected) noexcept; 
+  const std::string kAutoDefault = "Default";
+  const std::string kBlueLeftAuto = "Blue Left";
+  const std::string kBlueMiddleAuto = "Blue Middle";
+  const std::string kBlueRightAuto = "Blue Right";
+  const std::string kRedLeftAuto = "Red Left";
+  const std::string kRedMiddleAuto = "Red Middle";
+  const std::string kRedRightAuto = "Red Right";
 #pragma endregion
 
 #pragma region Teleop
@@ -61,6 +69,7 @@ private:
   bool m_lock{false};
   bool triggerSpeedEnabled{false};
   
+// sets the controllers to USB input
   frc2::CommandXboxController m_xboxDrive{0};
   frc2::CommandXboxController m_xboxOperate{1};
   // create dpad buttons

@@ -149,7 +149,7 @@ namespace intake
     constexpr bool kIntakeSpinMotorIsInverted = true;
 
     constexpr double kIntakeSpinMotorVoltagePercent = .60;
-    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.66;
+    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.76;
     constexpr bool timerDelayShooter = true;
     constexpr bool timerDelayAmp = false;
 }
@@ -163,12 +163,13 @@ namespace arm
 
     // Arm Controller
     constexpr double kArmPositionP = 4.0;
-    constexpr double kArmPositionD = .10;
+    constexpr double kArmPositionD = .12;
     constexpr double kArmPositionF = 0.0;
 
-    constexpr units::turn_t kArmToShooterAngle = 56.0_deg;
-    constexpr units::turn_t kArmToAmpAngle = 127.0_deg;
-    constexpr units::turn_t kArmToIntakeAngle = 260_deg;
+    //Lower degree values move arm towards shooter
+    constexpr units::turn_t kArmToShooterAngle = 57.0_deg;
+    constexpr units::turn_t kArmToAmpAngle = 131.0_deg;
+    constexpr units::turn_t kArmToIntakeAngle = 257_deg;
 }
 
 namespace climber
