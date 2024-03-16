@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this pr
 #include "Constants.h"
 #include "RobotContainer.h"
+#include "Robot.h"
 
 #include <frc/geometry/Pose2d.h>
 #include <frc/geometry/Rotation2d.h>
@@ -98,7 +99,10 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
     .AndThen(DriveCommand(0.7, 0, 0, 1.3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kBlueRightAuto)
   {
-      
+    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
+    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    .AndThen(DriveCommand(0.0, 0, -0.7, 1_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedLeftAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()

@@ -18,18 +18,27 @@ void IntakeCommand::Initialize() {
     Set finished to false to allow multiple calls of this command.
   */
   intakeSubsystem->SetSpinMotorVoltagePercent(intake::kIntakeSpinMotorVoltagePercent);
+  intakeSubsystem->SetSpinMotorCurrent(kCurrentLow); //ensure the intake is at the right setting
+  
   finished = false;
   frc::SmartDashboard::PutBoolean("Intake", false);
+  frc::SmartDashboard::PutBoolean("Limit 1", Test1);
+  frc::SmartDashboard::PutBoolean("Limit 2", Test2);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeCommand::Execute() {
   /* Checks if the limitswitches have been activated.  If so sets finished to true and intake to stop.
     Need to add code for moving arm pack to home position. */
+  
+
   if (limit1.Get() or limit2.Get()){
-    finished = true;
+    
     intakeSubsystem->StopIntake();
-    frc::SmartDashboard::PutBoolean("Intake", true);
+    frc::SmartDashboard::PutBoolean("Intake", true); //Main section for highlighting some has been 
+    frc::SmartDashboard::PutBoolean("Limit 1", Test1);
+    frc::SmartDashboard::PutBoolean("Limit 2", Test2);
+    finished = true;
 
   }
 }

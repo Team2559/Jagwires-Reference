@@ -29,6 +29,19 @@ public:
   void TestPeriodic() noexcept override;
   void TestExit() noexcept override;
 
+  //Code for setting up Shuffleboard on Robot start
+  std::optional<frc2::Command*> GetAutonomousCommand() noexcept; 
+  frc::SendableChooser<std::string> m_chooser;
+  const std::string kAutoDefault = "Default";
+  const std::string kBlueLeftAuto = "Blue Left";
+  const std::string kBlueMiddleAuto = "Blue Middle";
+  const std::string kBlueRightAuto = "Blue Right";
+  const std::string kRedLeftAuto = "Red Left";
+  const std::string kRedMiddleAuto = "Red Middle";
+  const std::string kRedRightAuto = "Red Right";
+  std::string m_autoSelected;
+
+
 private:
   std::optional<frc2::CommandPtr> m_autonomousCommand;
 
