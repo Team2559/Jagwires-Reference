@@ -84,7 +84,7 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   // .AndThen(DriveCommand(0.0, 0.0, .3, 1.5_s, &m_driveSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
 
-
+  m_autoSelected = m_chooser.GetSelected(); 
 
   if (m_autoSelected == kBlueLeftAuto)
   {

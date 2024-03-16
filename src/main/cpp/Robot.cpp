@@ -32,7 +32,7 @@ void Robot::RobotInit() noexcept
   m_chooser.AddOption(kRedRightAuto, kRedRightAuto);
 
   frc::SmartDashboard::PutData("Autonomous", &m_chooser);
-  m_autoSelected = m_chooser.GetSelected();
+  
 
   
 }
