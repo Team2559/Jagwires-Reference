@@ -88,36 +88,37 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
      .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
-     .AndThen(DriveCommand(0.0, 0, -0.7, 1_s, &m_driveSubsystem).ToPtr()).AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());   
-
+    .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.0, 0, 0.5, .5_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kBlueMiddleAuto)
   {
-    return DriveCommand(1.0, 0, 0, .5_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(1.0, 0, 0, .85_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.7, 0, 0, 1.3_s, &m_driveSubsystem).ToPtr());
+    .AndThen(DriveCommand(0.7, 0, 0, 1_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kBlueRightAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.0, 0, -0.7, 1_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.0, 0, -0.5, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedLeftAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
-    .AndThen(DriveCommand(0.0, 0, 0.5, .5_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.0, 0, 0.5, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedMiddleAuto)
   {
-    return DriveCommand(.7, 0, 0, 1.0_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(1, 0, 0, .85_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.7, 0, 0, 1.3_s, &m_driveSubsystem).ToPtr());
+    .AndThen(DriveCommand(0.7, 0, 0, 1_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedRightAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
-    .AndThen(DriveCommand(0.0, 0, 0.7, 1_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
+    .AndThen(DriveCommand(0.0, 0, -0.5, .5_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else
   {
@@ -376,19 +377,17 @@ void RobotContainer::ConfigureBindings() noexcept
   m_xboxOperate.LeftTrigger().OnTrue(ClimberLowerCommand(&m_climberSubsystem).ToPtr()); //Lower the climber while button is pressed
   m_xboxOperate.LeftTrigger().OnFalse(ClimberStopCommand(&m_climberSubsystem).ToPtr());   // on false stop the climber motor
 
-/* Amp key bindings
-  dpadUp.OnTrue(AmpHolderGrabCommand(&m_ampSubsystem).ToPtr()); //Grabs the note from the intake system
-  dpadUp.OnFalse(AmpHolderStopCommand(&m_ampSubsystem).ToPtr()); //Stops the grabber motors
+  //Shooter start and stop
 
-  dpadDown.OnTrue(AmpHolderDropCommand(&m_ampSubsystem).ToPtr()); //Release the note from the holder
-  dpadDown.OnFalse(AmpHolderStopCommand(&m_ampSubsystem).ToPtr()); //Stops the grabber motors
+  dpadUp.OnTrue(frc2::InstantCommand([&]() -> void
+          {m_shooterSubsystem.SetShooterMotorVoltagePercent(shooter::kShooterMotorVoltagePercent); },
+          {}).ToPtr()); //Start the shooter motors.
+          
 
-  dpadRight.OnTrue(AmpExtendCommand(&m_ampSubsystem).ToPtr()); //Extend the amp mechanism
-  dpadRight.OnFalse(AmpExtendCommand(&m_ampSubsystem).ToPtr()); //Stops the extension motors
+  dpadDown.OnTrue(frc2::InstantCommand([&]() -> void
+          {m_shooterSubsystem.StopShooter(); },
+          {}).ToPtr()); //Stop the shooter motors
 
-  dpadLeft.OnTrue(AmpRetractCommand(&m_ampSubsystem).ToPtr()); //Retracts the amp mechanism
-  dpadLeft.OnFalse(AmpRetractCommand(&m_ampSubsystem).ToPtr()); //Stops the extension motors
-  */
   
 }
 #pragma endregion

@@ -28,5 +28,5 @@ void ShootCommands::End(bool interrupted) {
 // Returns true when the command should end.
 bool ShootCommands::IsFinished() {
   // Fallback if nothing else stops the command
-  return timer.HasElapsed(10_s);
+  return timer.HasElapsed(4_s);
 }
