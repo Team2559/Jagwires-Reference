@@ -5,7 +5,8 @@ TransferArmSubsystem::TransferArmSubsystem() noexcept
 {
     m_TransferArmMotor.SetInverted(arm::kTransferArmMotorIsInverted);
 
-    m_encoder.SetMeasurementPeriod(10);
+    // m_encoder.SetMeasurementPeriod(10);
+    m_encoder.SetZeroOffset(arm::kTransferArmEncoderZero.value());
 
     StopTransferArm();
 }
@@ -17,7 +18,7 @@ void TransferArmSubsystem::StopTransferArm() noexcept
 
 void TransferArmSubsystem::SetArmMotorVoltagePercent(const double percent) noexcept
 {
-    m_TransferArmMotor.SetVoltage(percent * 12_V);
+    m_TransferArmMotor.Set(percent);
 }
 
 units::turn_t TransferArmSubsystem::GetTransferArmPosition() noexcept

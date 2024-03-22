@@ -29,7 +29,9 @@ namespace physical
     // This is an upper bound, for various reasons.  It needs to be empirically
     // measured.  Half of theoretical free speed is a reasonable starting value
     // (since something in the ballpark is needed here in order to to drive).
-    constexpr units::meters_per_second_t kMaxDriveSpeed = 12.1_fps / 1.25;
+    // 15.1 feet/second for SDS Mk4i L2 Gearing
+    constexpr units::meters_per_second_t kMaxDriveSpeed = 15.1_fps / 1.25;
+    constexpr double kSlowDrivePercent = 0.75;
 
     // For a square drive base, with +/-11.25" x/y coordinates for each of four
     // swerve modules, the radius of the circle going through all modules is:
@@ -39,7 +41,7 @@ namespace physical
     // This is used for rotating the robot in place, about it's center.  This
     // may need to be empirically adjusted, but check kDriveMetersPerRotation
     // before making any adjustment here.
-    constexpr units::meter_t kDriveMetersPerTurningCircle = 99.96_in;
+    constexpr units::meter_t kDriveMetersPerTurningCircle = 108.85_in;
 
     // This is the maximum rotational speed -- not of a swerve module, but of
     // the entire robot.  This is a function of the maximum drive speed and the
@@ -100,7 +102,7 @@ namespace pidf
 
     constexpr double kDrivePositionMaxVelocity = 5700.0;     // Rotations per minute.
     constexpr double kDrivePositionMaxAcceleration = 1000.0; // Rotations per minute per second.
-    constexpr double kDrivePositionP = 0.000;
+    constexpr double kDrivePositionP = 0.100;
     constexpr double kDrivePositionF = 0.0;
     constexpr double kDrivePositionI = 0.0;
     constexpr double kDrivePositionIZ = 0.0;
@@ -111,7 +113,7 @@ namespace pidf
     constexpr double kDriveVelocityMaxVelocity = 5700.0;
     constexpr double kDriveVelocityMaxAcceleration = 1000.0;
     constexpr double kDriveVelocityMaxJerk = 1.0;
-    constexpr double kDriveVelocityP = 0.0;
+    constexpr double kDriveVelocityP = 0.1;
     constexpr double kDriveVelocityF = 0.0;
     constexpr double kDriveVelocityI = 0.0;
     constexpr double kDriveVelocityIZ = 0.0;
@@ -140,35 +142,34 @@ namespace shooter
     constexpr double kShooterMotorVoltagePercent = .80;
 }
 
-namespace intake
+namespace intake 
 {
     // Intake Motor Parameters
     constexpr int kIntakeSpinMotorCanID = 16;
     constexpr bool kIntakeSpinMotorIsInverted = true;
 
-    /* NOTE!!!: The intake arm values are NOT final, are subject to change
-    after testing*/
-    constexpr units::degree_t kIntakeArmHome = 90.0_deg;
-    constexpr units::degree_t kIntakeArmPickup = 180.0_deg;
-    constexpr units::degree_t kIntakeArmLoad = 0.0_deg;
-
-    constexpr double kIntakeSpinMotorVoltagePercent = .80;
-    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.90;
+    constexpr double kIntakeSpinMotorVoltagePercent = .75;
+    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.78;
+    constexpr bool timerDelayShooter = true;
+    constexpr bool timerDelayAmp = false;
 }
 
 namespace arm
 {
     // Arm Motor Parameters
     constexpr int kTransferArmMotorCanID = 17;
-    constexpr bool kTransferArmMotorIsInverted = true;
+    constexpr bool kTransferArmMotorIsInverted = false;
+    constexpr units::turn_t kTransferArmEncoderZero = 94.0_deg;
 
     // Arm Controller
-    constexpr double kArmPositionP = 10.0;
-    constexpr double kArmPositionD = .10;
+    constexpr double kArmPositionP = 4.0;
+    constexpr double kArmPositionD = .12;
     constexpr double kArmPositionF = 0.0;
 
-    constexpr units::turn_t kShooterToAmpAngle = -50_deg;
-    constexpr units::turn_t kShooterToIntakeAngle = -200_deg;
+    //Lower degree values move arm towards shooter 
+    constexpr units::turn_t kArmToShooterAngle = 57.0_deg;
+    constexpr units::turn_t kArmToAmpAngle = 131.0_deg;
+    constexpr units::turn_t kArmToIntakeAngle = 257_deg;
 }
 
 namespace climber
@@ -178,22 +179,22 @@ namespace climber
     constexpr bool kClimberMotorIsInverted = false;
     constexpr double kClimberMotorRaiseVoltagePercent = .50;
     constexpr units::second_t kClimberRaiseTimer = 2_s;
-    constexpr double kClimberMotorLowerVoltagePercent = -.50;
+    constexpr double kClimberMotorLowerVoltagePercent = -1.00;
     constexpr units::second_t kClimberLowerTimer = 2_s;
 
     constexpr int kClimberSolenoidCanID = 19;
 
 }
 
-namespace amp 
-{
-    //Bosch motor for extending out and back
-    constexpr int kAmpExtendMotorCanID = 20;
-    constexpr bool kAmpExtendMotorIsInverted = false;
-    constexpr double kAmpExtendMotorVoltagePercent = .15;
+// namespace amp 
+// {
+//     //Bosch motor for extending out and back
+//     constexpr int kAmpExtendMotorCanID = 20;
+//     constexpr bool kAmpExtendMotorIsInverted = false;
+//     constexpr double kAmpExtendMotorVoltagePercent = .15;
 
-    //Johnson Electric for raising and lowering 
-    constexpr int kAmpRaiseMotorCanID = 21;
-    constexpr bool kAmpRaiseMotorIsInverted = false;
-    constexpr double kAmpRaiseMotorVoltagePercent = .15;
-}
+//     //Johnson Electric for raising and lowering 
+//     constexpr int kAmpRaiseMotorCanID = 21;
+//     constexpr bool kAmpRaiseMotorIsInverted = false;
+//     constexpr double kAmpRaiseMotorVoltagePercent = .15;
+// }

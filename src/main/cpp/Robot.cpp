@@ -8,6 +8,9 @@
 #include <frc/DriverStation.h>
 #include <frc/livewindow/LiveWindow.h>
 #include <frc2/command/CommandScheduler.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/shuffleboard/Shuffleboard.h>
+#include <frc/shuffleboard/ShuffleboardTab.h>
 
 void Robot::RobotInit() noexcept
 {
@@ -16,6 +19,22 @@ void Robot::RobotInit() noexcept
 
   frc::DataLogManager::Start();
   frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
+ 
+  //frc::Shuffleboard::SelectTab("Auto");
+
+  //declaring the values used to set an autonomous mode
+  m_chooser.SetDefaultOption(kAutoDefault, kAutoDefault);
+  m_chooser.AddOption(kBlueLeftAuto, kBlueLeftAuto);
+  m_chooser.AddOption(kBlueMiddleAuto, kBlueMiddleAuto);
+  m_chooser.AddOption(kBlueRightAuto, kBlueRightAuto);
+  m_chooser.AddOption(kRedLeftAuto, kRedLeftAuto);
+  m_chooser.AddOption(kRedMiddleAuto, kRedMiddleAuto);
+  m_chooser.AddOption(kRedRightAuto, kRedRightAuto);
+
+  frc::SmartDashboard::PutData("Autonomous", &m_chooser);
+  
+
+  
 }
 
 /**
@@ -64,7 +83,7 @@ void Robot::AutonomousInit() noexcept
 {
   m_container.TestExit();
 
-  m_autonomousCommand = m_container.GetAutonomousCommand();
+  m_autonomousCommand = m_container.GetAutonomousCommand(m_chooser.GetSelected());
 
   if (m_autonomousCommand)
   {

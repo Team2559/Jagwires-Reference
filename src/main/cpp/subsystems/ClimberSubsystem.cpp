@@ -7,6 +7,7 @@
 ClimberSubsystem::ClimberSubsystem() noexcept
 {
     m_ClimberMotor.SetInverted(climber::kClimberMotorIsInverted);
+    this->SolenoidUp();
 }
 
 void ClimberSubsystem::StopClimber() noexcept
@@ -16,5 +17,15 @@ void ClimberSubsystem::StopClimber() noexcept
 
 void ClimberSubsystem::SetClimberMotorVoltagePercent(const double percent) noexcept
 {
-    m_ClimberMotor.SetVoltage(percent * 12.00_V);
+    m_ClimberMotor.Set(percent);
+}
+
+void ClimberSubsystem::SolenoidUp() noexcept
+{
+    SolenoidSwitch.Set(false);
+}
+
+void ClimberSubsystem::SolenoidDown() noexcept
+{
+    SolenoidSwitch.Set(true);
 }

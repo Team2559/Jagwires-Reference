@@ -236,7 +236,7 @@ void SwerveModule::Periodic() noexcept
     }
 
     // Use voltage compensation, to offset low battery voltage.
-    m_turningMotor->SetVoltage(calculated * 12.0_V);
+    m_turningMotor->Set(calculated);
 }
 
 void SwerveModule::ResetTurning() noexcept
@@ -421,7 +421,7 @@ void SwerveModule::SetDriveVelocity(units::velocity::meters_per_second_t velocit
 #if 0
     m_driveMotor->SeekVelocity(velocity * vectorAlignment);
 #else
-    m_driveMotor->SetVoltage(velocity * vectorAlignment / physical::kMaxDriveSpeed * 12.0_V);
+    m_driveMotor->Set(velocity * vectorAlignment / physical::kMaxDriveSpeed);
 #endif
 }
 
