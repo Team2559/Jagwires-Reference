@@ -98,7 +98,8 @@ namespace pidf
     constexpr double kTurningPositionIZ = 0.0;
     constexpr double kTurningPositionIM = 0.0;
     constexpr double kTurningPositionD = 0.000395;
-    constexpr double kTurningPositionDF = 0.0;
+    constexpr double kTurningPositionDF = 0.0;      
+     
 
     constexpr double kDrivePositionMaxVelocity = 5700.0;     // Rotations per minute.
     constexpr double kDrivePositionMaxAcceleration = 1000.0; // Rotations per minute per second.
@@ -131,6 +132,8 @@ namespace pidf
 
 namespace shooter
 {
+
+
     // Left Motor Parameters
     constexpr int kLeftShooterMotorCanID = 14;
     constexpr bool kLeftShooterMotorIsInverted = true;
@@ -141,7 +144,6 @@ namespace shooter
 
     constexpr double kShooterMotorVoltagePercent = .80;
 }
-
 namespace intake 
 {
     // Intake Motor Parameters
@@ -168,8 +170,9 @@ namespace arm
 
     //Lower degree values move arm towards shooter 
     constexpr units::turn_t kArmToShooterAngle = 57.0_deg;
-    constexpr units::turn_t kArmToAmpAngle = 131.0_deg;
+    constexpr units::turn_t kArmToAmpAngle = 129.0_deg;
     constexpr units::turn_t kArmToIntakeAngle = 257_deg;
+
 }
 
 namespace climber

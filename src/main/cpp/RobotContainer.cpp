@@ -98,13 +98,16 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string
     .AndThen(DriveCommand(0.7, 0, 0, 1_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kBlueRightAuto)
   {
-    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
+    return DriveCommand(0.0, 0.0, 0.0, 5.5_s, &m_driveSubsystem).ToPtr()
+    .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
     .AndThen(DriveCommand(0.0, 0, -0.5, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedLeftAuto)
   {
-    return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
+    
+    return DriveCommand(0.0, 0.0, 0.0, 5.5_s, &m_driveSubsystem).ToPtr()
+    .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
     .AndThen(DriveCommand(0.0, 0, 0.5, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
@@ -122,7 +125,8 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else
   {
-    return DriveCommand(1.0, 0, 0, .5_s, &m_driveSubsystem).ToPtr();
+    return DriveCommand(0.70, 0, 0, .7_s, &m_driveSubsystem).ToPtr()
+    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()));
     // .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
     // .AndThen(DriveCommand(0.7, 0, 0, 1.5_s, &m_driveSubsystem).ToPtr());
   }
