@@ -183,7 +183,12 @@ void RobotContainer::TeleopInit() noexcept
                                                                {&m_infrastructureSubsystem}));
 }
 
-void RobotContainer::TeleopPeriodic() noexcept {}
+void RobotContainer::TeleopPeriodic() noexcept {
+
+  units::millimeter_t measurement = m_ultrasonic.GetRange();
+  units::millimeter_t filteredMeasurement = m_filter.Calculate(measurement);
+  frc::smartDashboard::PutNumber("Distance", filteredMeasurement);
+}
 
 void RobotContainer::TeleopExit() noexcept {}
 

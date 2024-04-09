@@ -58,6 +58,11 @@ public:
   void TeleopPeriodic() noexcept;
   void TeleopExit() noexcept;
 
+  static constexpr units::millimeter_t kAMPDistance = 1_m;
+
+  static constexpr int kUltrasonicPingPort = 0;
+  static constexpr int kUltrasonicEchoPort = 1;
+
 private:
   static frc2::CommandPtr DriveCommandFactory(RobotContainer *container) noexcept;
   std::tuple<double, double, double, bool> GetDriveTeleopControls() noexcept;
@@ -77,6 +82,10 @@ private:
   frc2::POVButton dpadRight{&m_xboxOperate, 90};  // 90 degrees for right
   frc2::POVButton dpadDown{&m_xboxOperate, 180}; // 180 degrees for down
   frc2::POVButton dpadLeft{&m_xboxOperate, 270};  // 270 degrees for left
+
+  frc::MedianFilter<units::millimeter_t> m_filter{5};
+  frc::Ultrasonic m_ultrasonic{kUltrasonicPingPort, kUltrasonicEchoPort};
+  
 #pragma endregion
 
 #pragma region Test
