@@ -40,7 +40,14 @@ void IntakeCommand::Execute() {
     frc::SmartDashboard::PutBoolean("Limit 2", Test2);
     finished = true;
 
+    ledHold = false;
+
   }
+  /*
+  else {
+    ledSubsystem->NormalColor();
+  }*/
+  
 }
 
 // Called once the command ends or is interrupted.

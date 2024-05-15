@@ -16,6 +16,7 @@
 #include "subsystems/Infrastructure.h"
 #include "subsystems/ClimberSubsystem.h"
 #include "subsystems/ShooterSubsystem.h"
+#include "subsystems/LEDSubsystem.h"
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/shuffleboard/ShuffleboardTab.h>
 
@@ -37,7 +38,7 @@ public:
   RobotContainer(const RobotContainer &) = delete;
   RobotContainer &operator=(const RobotContainer &) = delete;
 
-#pragma region Autonomous
+// #pragma region Autonomous
 public:
   void AutonomousInit() noexcept;
   void AutonomousPeriodic() noexcept;
@@ -50,9 +51,9 @@ public:
   const std::string kRedLeftAuto = "Red Left";
   const std::string kRedMiddleAuto = "Red Middle";
   const std::string kRedRightAuto = "Red Right";
-#pragma endregion
+// #pragma endregion
 
-#pragma region Teleop
+// #pragma region Teleop
 public:
   void TeleopInit() noexcept;
   void TeleopPeriodic() noexcept;
@@ -77,25 +78,25 @@ private:
   frc2::POVButton dpadRight{&m_xboxOperate, 90};  // 90 degrees for right
   frc2::POVButton dpadDown{&m_xboxOperate, 180}; // 180 degrees for down
   frc2::POVButton dpadLeft{&m_xboxOperate, 270};  // 270 degrees for left
-#pragma endregion
+// #pragma endregion
 
-#pragma region Test
+// #pragma region Test
 public:
   void TestInit() noexcept;
   void TestPeriodic() noexcept;
   void TestExit() noexcept;
 private:
   static frc2::CommandPtr PointCommandFactory(RobotContainer *container) noexcept;
-#pragma endregion
+// #pragma endregion
 
-#pragma region Disabled
+// #pragma region Disabled
 public:
   void DisabledInit() noexcept;
   void DisabledPeriodic() noexcept;
   void DisabledExit() noexcept;
-#pragma endregion
+// #pragma endregion
 
-#pragma region Subsystem Declare
+// #pragma region Subsystem Declare
 private:
   // The robot's subsystems and commands are declared here
   DriveSubsystem m_driveSubsystem;
@@ -104,9 +105,11 @@ private:
   TransferArmSubsystem m_transferArmSubsystem;
   ShooterSubsystem m_shooterSubsystem;
   ClimberSubsystem m_climberSubsystem;
+  LEDSubsystem m_ledSubsystem;
 
   // declared for the infrastructure subsystem
   uint m_LEDPattern{29};
   uint m_LEDPatternCount{0};
-#pragma endregion
+  
+// #pragma endregion
 };

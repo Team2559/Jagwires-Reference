@@ -40,6 +40,7 @@ public:
   const std::string kRedMiddleAuto = "Red Middle";
   const std::string kRedRightAuto = "Red Right";
 
+
 private:
   std::optional<frc2::CommandPtr> m_autonomousCommand;
 

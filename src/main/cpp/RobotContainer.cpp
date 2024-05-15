@@ -41,16 +41,17 @@
 RobotContainer::RobotContainer() noexcept
 {
   // Initialize all of your commands and subsystems here
-
-  m_LEDPatternCount = m_infrastructureSubsystem.GetLEDPatternCount();
+  m_ledSubsystem.NormalColor();
 
   // Configure the button bindings
   ConfigureBindings();
 }
 
-#pragma region Autonomous
+// #pragma region Autonomous
 void RobotContainer::AutonomousInit() noexcept
 {
+  m_ledSubsystem.AllianceColor();
+
   m_driveSubsystem.ClearFaults();
 
   m_driveSubsystem.ResetEncoders();
@@ -160,11 +161,13 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string
   .AndThen(DriveCommand(0.0, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
   */
 }
-#pragma endregion
+// #pragma endregion
 
-#pragma region Teleop
+// #pragma region Teleop
 void RobotContainer::TeleopInit() noexcept
 {
+  m_ledSubsystem.AllianceColor();
+
   m_driveSubsystem.ClearFaults();
 
   m_driveSubsystem.ResetEncoders();
@@ -354,6 +357,9 @@ void RobotContainer::ConfigureBindings() noexcept
   m_xboxOperate.A().OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
   m_xboxOperate.B().OnTrue(IntakeEjectCommand(intake::timerDelayAmp, IntakeMotorCurrent::kCurrentHigh, &m_intakeSubsystem).ToPtr());
 
+  //Test of LED Strips
+  //m_xboxDrive.A().OnTrue(InstantCommand(&m_ledSubsystem...).ToPtr());
+
   // Runs shoot command to move arm into postion, start up the shooting motors and eject the note
   m_xboxOperate.Y().OnTrue(
     (
@@ -377,6 +383,8 @@ void RobotContainer::ConfigureBindings() noexcept
   m_xboxOperate.LeftTrigger().OnTrue(ClimberLowerCommand(&m_climberSubsystem).ToPtr()); //Lower the climber while button is pressed
   m_xboxOperate.LeftTrigger().OnFalse(ClimberStopCommand(&m_climberSubsystem).ToPtr());   // on false stop the climber motor
 
+  
+
   //Shooter start and stop
 
   dpadUp.OnTrue(frc2::InstantCommand([&]() -> void
@@ -390,11 +398,13 @@ void RobotContainer::ConfigureBindings() noexcept
 
   
 }
-#pragma endregion
+// #pragma endregion
 
-#pragma region Test
+// #pragma region Test
 void RobotContainer::TestInit() noexcept
 {
+  // m_ledSubsystem.TestColor();
+
   frc2::CommandScheduler::GetInstance().CancelAll();
 
   m_driveSubsystem.ClearFaults();
@@ -402,8 +412,6 @@ void RobotContainer::TestInit() noexcept
   m_driveSubsystem.ResetEncoders();
 
   m_driveSubsystem.TestInit();
-
-  frc::SendableChooser<std::function<frc2::CommandPtr()>> *chooser{m_driveSubsystem.TestModeChooser()};
 
   frc2::CommandScheduler::GetInstance().Enable();
 }
@@ -445,9 +453,9 @@ frc2::CommandPtr RobotContainer::PointCommandFactory(RobotContainer *container) 
       },
       driveRequirements)};
 }
-#pragma endregion
+// #pragma endregion
 
-#pragma region Disabled
+// #pragma region Disabled
 void RobotContainer::DisabledInit() noexcept
 {
   frc2::CommandScheduler::GetInstance().CancelAll();
@@ -458,7 +466,7 @@ void RobotContainer::DisabledInit() noexcept
 
   // Useful things may be done disabled... (construct, config, dashboard, etc.)
   frc2::CommandScheduler::GetInstance().Enable();
-
+  
   m_driveSubsystem.DisabledInit();
 }
 
@@ -472,4 +480,4 @@ void RobotContainer::DisabledExit() noexcept
 
   m_driveSubsystem.DisabledExit();
 }
-#pragma endregion
+// #pragma endregion
