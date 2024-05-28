@@ -37,6 +37,7 @@
 #include <string>
 #include <units/acceleration.h>
 #include <units/velocity.h>
+#include <frc2/command/button/RobotModeTriggers.h>
 
 RobotContainer::RobotContainer() noexcept
 {
@@ -45,6 +46,7 @@ RobotContainer::RobotContainer() noexcept
 
   // Configure the button bindings
   ConfigureBindings();
+  LEDStateBindings();
 }
 
 // #pragma region Autonomous
@@ -185,6 +187,19 @@ void RobotContainer::TeleopInit() noexcept
 void RobotContainer::TeleopPeriodic() noexcept {}
 
 void RobotContainer::TeleopExit() noexcept {}
+
+void RobotContainer::LEDStateBindings() noexcept {
+  auto noteTrigger = frc2::Trigger([&]() -> bool {return m_intakeSubsystem.HasNote();});
+  auto disabledTrigger = frc2::RobotModeTriggers::Disabled();
+
+  auto normalLEDCommand = new frc2::InstantCommand([&]() -> void {m_ledSubsystem.NormalColor();});
+  auto allianceLEDCommand = new frc2::InstantCommand([&]() -> void {m_ledSubsystem.AllianceColor();});
+  auto noteLEDCommand = new frc2::InstantCommand([&]() -> void {m_ledSubsystem.NoteColor();});
+
+  disabledTrigger.OnTrue(normalLEDCommand);
+  (!disabledTrigger && !noteTrigger).OnTrue(allianceLEDCommand);
+  (!disabledTrigger && noteTrigger).OnTrue(noteLEDCommand);
+}
 
 frc2::CommandPtr RobotContainer::DriveCommandFactory(RobotContainer *container) noexcept
 {
@@ -356,9 +371,6 @@ void RobotContainer::ConfigureBindings() noexcept
 
   m_xboxOperate.A().OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
   m_xboxOperate.B().OnTrue(IntakeEjectCommand(intake::timerDelayAmp, IntakeMotorCurrent::kCurrentHigh, &m_intakeSubsystem).ToPtr());
-
-  //Test of LED Strips
-  //m_xboxDrive.A().OnTrue(InstantCommand(&m_ledSubsystem...).ToPtr());
 
   // Runs shoot command to move arm into postion, start up the shooting motors and eject the note
   m_xboxOperate.Y().OnTrue(

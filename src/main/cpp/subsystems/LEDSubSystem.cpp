@@ -37,10 +37,6 @@ void LEDSubsystem::AllianceColor() noexcept {
     }
 }
 
-void LEDSubsystem::StartColor() noexcept {
-    SetColor(1045_us); // Forest Pallete Rainbow
-}
-
 void LEDSubsystem::NoteColor() noexcept {
-    SetColor(1035_us); // Lave Pallete Rainbow
+    SetColor(PalletePattern::TWINKLES + PalleteThemes::FOREST_THEME);
 }

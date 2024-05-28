@@ -27,3 +27,8 @@ void IntakeSubsystem::SetSpinMotorVoltagePercent(const double percent) noexcept
 {
     m_IntakeMotor.Set(percent);
 }
+
+bool IntakeSubsystem::HasNote() noexcept
+{
+    return m_limit1.Get() || m_limit2.Get();
+}

@@ -27,5 +27,5 @@ class ClimberSubsystem : public frc2::SubsystemBase
   // declared private and exposed only through public methods.
 
   rev::CANSparkMax m_ClimberMotor{climber::kClimberMotorCanID, rev::CANSparkMax::MotorType::kBrushed};
-  frc::DigitalOutput SolenoidSwitch{7};
+  frc::DigitalOutput SolenoidSwitch{climber::kClimberSolenoidDIOPort};
 };

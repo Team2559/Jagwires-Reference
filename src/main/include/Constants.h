@@ -152,6 +152,9 @@ namespace intake
     constexpr double kIntakeSpinMotorEjectVoltagePercent = -.78;
     constexpr bool timerDelayShooter = true;
     constexpr bool timerDelayAmp = false;
+
+    constexpr int kIntakeLimit1DIOPort = 8;
+    constexpr int kIntakeLimit2DIOPort = 9;
 }
 
 namespace arm
@@ -182,7 +185,8 @@ namespace climber
     constexpr double kClimberMotorLowerVoltagePercent = -1.00;
     constexpr units::second_t kClimberLowerTimer = 2_s;
 
-    constexpr int kClimberSolenoidCanID = 19;
+    // constexpr int kClimberSolenoidCanID = 19;
+    constexpr int kClimberSolenoidDIOPort = 7;
 
 }
 

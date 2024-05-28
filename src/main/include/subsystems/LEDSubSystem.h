@@ -16,7 +16,7 @@
 #include <array>
 #include <units/time.h>
 
-#include "Constants.h" 
+#include "Constants.h"
 
 class LEDSubsystem : public frc2::SubsystemBase {
  public:
@@ -27,8 +27,6 @@ class LEDSubsystem : public frc2::SubsystemBase {
   void AllianceColor() noexcept;
 
   void NoteColor() noexcept;
-  
-  void StartColor() noexcept;
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
