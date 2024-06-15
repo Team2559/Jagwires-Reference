@@ -24,12 +24,12 @@ void Robot::RobotInit() noexcept
 
   //declaring the values used to set an autonomous mode
   m_chooser.SetDefaultOption(kAutoDefault, kAutoDefault);
-  m_chooser.AddOption(kBlueLeftAuto, kBlueLeftAuto);
+  m_chooser.AddOption(kBlueLongAuto, kBlueLongAuto);
   m_chooser.AddOption(kBlueMiddleAuto, kBlueMiddleAuto);
-  m_chooser.AddOption(kBlueRightAuto, kBlueRightAuto);
-  m_chooser.AddOption(kRedLeftAuto, kRedLeftAuto);
+  m_chooser.AddOption(kBlueShortAuto, kBlueShortAuto);
+  m_chooser.AddOption(kRedShortAuto, kRedShortAuto);
   m_chooser.AddOption(kRedMiddleAuto, kRedMiddleAuto);
-  m_chooser.AddOption(kRedRightAuto, kRedRightAuto);
+  m_chooser.AddOption(kRedLongAuto, kRedLongAuto);
 
   frc::SmartDashboard::PutData("Autonomous", &m_chooser);
 }

@@ -45,12 +45,12 @@ public:
   void AutonomousExit() noexcept;
   std::optional<frc2::CommandPtr> GetAutonomousCommand(std::string m_autoSelected) noexcept; 
   const std::string kAutoDefault = "Default";
-  const std::string kBlueLeftAuto = "Blue Left";
+  const std::string kBlueLongAuto = "Blue Long";
   const std::string kBlueMiddleAuto = "Blue Middle";
-  const std::string kBlueRightAuto = "Blue Right";
-  const std::string kRedLeftAuto = "Red Left";
+  const std::string kBlueShortAuto = "Blue Short";
+  const std::string kRedShortAuto = "Red Short";
   const std::string kRedMiddleAuto = "Red Middle";
-  const std::string kRedRightAuto = "Red Right";
+  const std::string kRedLongAuto = "Red Long";
 // #pragma endregion
 
 // #pragma region Teleop

@@ -87,7 +87,7 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string
   // .AndThen(DriveCommand(0.0, 0.0, .3, 1.5_s, &m_driveSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
 
-  if (m_autoSelected == kBlueLeftAuto)
+  if (m_autoSelected == kBlueLongAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
      .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
@@ -99,13 +99,13 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string
     return DriveCommand(1.0, 0, 0, .85_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
     .AndThen(DriveCommand(0.7, 0, 0, 1_s, &m_driveSubsystem).ToPtr());
-  }else if(m_autoSelected == kBlueRightAuto)
+  }else if(m_autoSelected == kBlueShortAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
     .AndThen(DriveCommand(0.0, 0, -0.5, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
-  }else if(m_autoSelected == kRedLeftAuto)
+  }else if(m_autoSelected == kRedShortAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
@@ -116,7 +116,7 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string
     return DriveCommand(1, 0, 0, .85_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
     .AndThen(DriveCommand(0.7, 0, 0, 1_s, &m_driveSubsystem).ToPtr());
-  }else if(m_autoSelected == kRedRightAuto)
+  }else if(m_autoSelected == kRedLongAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
