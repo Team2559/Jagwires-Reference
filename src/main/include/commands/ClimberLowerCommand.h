@@ -34,5 +34,5 @@ class ClimberLowerCommand
   private:
     ClimberSubsystem *climberSubsystem{nullptr};
     frc::Timer timer{};
-    bool finished{false};
+    // bool finished{false};
 };

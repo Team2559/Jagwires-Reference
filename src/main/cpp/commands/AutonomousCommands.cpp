@@ -33,8 +33,8 @@ void TimedAutoBase::End(bool interrupted) noexcept
 
 void TimedAutoBase::Execute() noexcept
 {
-    const uint64_t FPGATime = frc::RobotController::GetFPGATime();
-    const uint deltaTime = (FPGATime - FPGATime_) / 1000; // ms
+    // const uint64_t FPGATime = frc::RobotController::GetFPGATime();
+    // const uint deltaTime = (FPGATime - FPGATime_) / 1000; // ms
 }
 
 frc2::CommandPtr TrajectoryAuto::TrajectoryAutoCommandFactory(DriveSubsystem *const drive, std::string_view name, frc::Trajectory &trajectory) noexcept

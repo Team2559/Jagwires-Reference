@@ -184,6 +184,8 @@ namespace climber
     constexpr units::second_t kClimberRaiseTimer = 2_s;
     constexpr double kClimberMotorLowerVoltagePercent = -1.00;
     constexpr units::second_t kClimberLowerTimer = 2_s;
+    constexpr double kClimberMotorReleaseVoltagePercent = -.50;
+    constexpr units::second_t kClimberReleaseTimer = .05_s;
 
     // constexpr int kClimberSolenoidCanID = 19;
     constexpr int kClimberSolenoidDIOPort = 7;

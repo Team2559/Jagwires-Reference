@@ -8,7 +8,7 @@
 void ClimberLowerCommand::Initialize() {
   timer.Reset();
   timer.Start();
-  finished = false;
+  // finished = false;
   climberSubsystem->SolenoidDown();
 }
 
@@ -17,7 +17,8 @@ void ClimberLowerCommand::Execute() {
   //Start the climber motor to move climbing hook up. 
   climberSubsystem->SetClimberMotorVoltagePercent(climber::kClimberMotorLowerVoltagePercent);
   // End command after time defined in constants file.
-  if (timer.HasElapsed(climber::kClimberLowerTimer)) { finished = true; }}
+  //if (timer.HasElapsed(climber::kClimberLowerTimer)) { finished = true; }
+}
 
 // Called once the command ends or is interrupted.
 void ClimberLowerCommand::End(bool interrupted) {
@@ -27,5 +28,5 @@ void ClimberLowerCommand::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool ClimberLowerCommand::IsFinished() {
-  return finished;
+  return false;
 }
