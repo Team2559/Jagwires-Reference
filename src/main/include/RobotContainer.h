@@ -43,7 +43,8 @@ public:
   void AutonomousInit() noexcept;
   void AutonomousPeriodic() noexcept;
   void AutonomousExit() noexcept;
-  std::optional<frc2::CommandPtr> GetAutonomousCommand(std::string m_autoSelected) noexcept; 
+  frc::SendableChooser<std::string> m_autoChooser;
+  std::optional<frc2::CommandPtr> GetAutonomousCommand() noexcept;
   const std::string kAutoDefault = "Default";
   const std::string kBlueLongAuto = "Blue Long";
   const std::string kBlueMiddleAuto = "Blue Middle";

@@ -44,6 +44,17 @@ RobotContainer::RobotContainer() noexcept
   // Initialize all of your commands and subsystems here
   m_ledSubsystem.NormalColor();
 
+  // Declaring the values used to set an autonomous mode
+  m_autoChooser.SetDefaultOption(kAutoDefault, kAutoDefault);
+  m_autoChooser.AddOption(kBlueLongAuto, kBlueLongAuto);
+  m_autoChooser.AddOption(kBlueMiddleAuto, kBlueMiddleAuto);
+  m_autoChooser.AddOption(kBlueShortAuto, kBlueShortAuto);
+  m_autoChooser.AddOption(kRedShortAuto, kRedShortAuto);
+  m_autoChooser.AddOption(kRedMiddleAuto, kRedMiddleAuto);
+  m_autoChooser.AddOption(kRedLongAuto, kRedLongAuto);
+
+  frc::SmartDashboard::PutData("Autonomous", &m_autoChooser);
+
   // Configure the button bindings
   ConfigureBindings();
   LEDStateBindings();
@@ -78,7 +89,7 @@ void RobotContainer::AutonomousPeriodic() noexcept {}
 
 void RobotContainer::AutonomousExit() noexcept {}
 
-std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string m_autoSelected) noexcept
+std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
 {
   // DriveCommand(xspeed, yspeed, rotation, time, &driveSubsystem)
   // will move in the given x and y direction while rotating for time seconds
@@ -86,6 +97,8 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand(std::string
   // return ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(&m_intakeSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.0, 0.0, .3, 1.5_s, &m_driveSubsystem).ToPtr())
   // .AndThen(DriveCommand(0.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
+
+  std::string m_autoSelected = m_autoChooser.GetSelected();
 
   if (m_autoSelected == kBlueLongAuto)
   {
@@ -226,8 +239,6 @@ frc2::CommandPtr RobotContainer::DriveCommandFactory(RobotContainer *container) 
             std::get<3>(controls));
       },
       driveRequirements)};
-
-
 }
 
 std::tuple<double, double, double, bool> RobotContainer::GetDriveTeleopControls() noexcept

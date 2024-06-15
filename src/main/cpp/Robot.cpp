@@ -18,20 +18,7 @@ void Robot::RobotInit() noexcept
   frc::LiveWindow::DisableAllTelemetry();
 
   frc::DataLogManager::Start();
-  frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());
- 
-  //frc::Shuffleboard::SelectTab("Auto");
-
-  //declaring the values used to set an autonomous mode
-  m_chooser.SetDefaultOption(kAutoDefault, kAutoDefault);
-  m_chooser.AddOption(kBlueLongAuto, kBlueLongAuto);
-  m_chooser.AddOption(kBlueMiddleAuto, kBlueMiddleAuto);
-  m_chooser.AddOption(kBlueShortAuto, kBlueShortAuto);
-  m_chooser.AddOption(kRedShortAuto, kRedShortAuto);
-  m_chooser.AddOption(kRedMiddleAuto, kRedMiddleAuto);
-  m_chooser.AddOption(kRedLongAuto, kRedLongAuto);
-
-  frc::SmartDashboard::PutData("Autonomous", &m_chooser);
+  frc::DriverStation::StartDataLog(frc::DataLogManager::GetLog());  
 }
 
 /**
@@ -80,7 +67,7 @@ void Robot::AutonomousInit() noexcept
 {
   m_container.TestExit();
 
-  m_autonomousCommand = m_container.GetAutonomousCommand(m_chooser.GetSelected());
+  m_autonomousCommand = m_container.GetAutonomousCommand();
 
   if (m_autonomousCommand)
   {
