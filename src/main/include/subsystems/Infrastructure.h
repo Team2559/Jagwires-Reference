@@ -23,11 +23,11 @@ public:
      */
     void Periodic() noexcept override;
 
-    void Enable() noexcept;
+    // void Enable() noexcept;
 
-    void Disable() noexcept;
+    // void Disable() noexcept;
 
-    units::pressure::pounds_per_square_inch_t GetPressure() noexcept;
+    // units::pressure::pounds_per_square_inch_t GetPressure() noexcept;
 
     uint GetLEDPatternCount() noexcept;
 
@@ -37,6 +37,6 @@ public:
 
 private:
     std::unique_ptr<frc::PowerDistribution> pdh_;
-    std::unique_ptr<frc::Compressor> ph_;
+    // std::unique_ptr<frc::Compressor> ph_;
     std::unique_ptr<frc::Spark> leds_;
 };
