@@ -398,7 +398,7 @@ void RobotContainer::ConfigureBindings() noexcept
       (
         PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()
         .AlongWith(frc2::cmd::Wait(1.0_s) /* Minimum time for shooter motors to spool */)
-      ).AndThen(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr())
+      ).AndThen(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
     ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
   );
 

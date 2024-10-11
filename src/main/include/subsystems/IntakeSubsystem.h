@@ -7,6 +7,7 @@
 
 typedef enum {
   kCurrentHigh,
+  kCurrentMed,
   kCurrentLow
 } IntakeMotorCurrent;
 

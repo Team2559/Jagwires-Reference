@@ -13,8 +13,8 @@ void IntakeEjectCommand::Initialize() {
      Set finished to false to allow multiple calls of this command
   */
   
-  if (currentMode == kCurrentHigh) {
-    intakeSubsystem->SetSpinMotorCurrent(kCurrentHigh);
+  if (currentMode == kCurrentHigh || currentMode == kCurrentMed) {
+    intakeSubsystem->SetSpinMotorCurrent(currentMode);
   }
 
   timer.Reset();
@@ -35,7 +35,7 @@ void IntakeEjectCommand::End(bool interrupted) {
   //Stop the intake motors
   intakeSubsystem->StopIntake();
 
-  if (currentMode == kCurrentHigh) {
+  if (currentMode == kCurrentHigh || currentMode == kCurrentMed) {
     intakeSubsystem->SetSpinMotorCurrent(kCurrentLow);
   }
 }
