@@ -146,7 +146,7 @@ namespace intake
 {
     // Intake Motor Parameters
     constexpr int kIntakeSpinMotorCanID = 16;
-    constexpr bool kIntakeSpinMotorIsInverted = true;
+    constexpr bool kIntakeSpinMotorIsInverted = false;
 
     constexpr double kIntakeSpinMotorVoltagePercent = .75;
     constexpr double kIntakeSpinMotorEjectVoltagePercent = -.78;
