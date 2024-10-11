@@ -25,3 +25,13 @@ units::turn_t TransferArmSubsystem::GetTransferArmPosition() noexcept
 {
     return units::turn_t(m_encoder.GetPosition());
 }
+
+void TransferArmSubsystem::LockBreak() noexcept
+{
+    m_TransferArmMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kBrake);
+}
+
+void TransferArmSubsystem::ReleaseBreak() noexcept
+{
+    m_TransferArmMotor.SetIdleMode(rev::CANSparkBase::IdleMode::kCoast);
+}

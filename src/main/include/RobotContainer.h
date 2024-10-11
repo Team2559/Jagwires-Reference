@@ -67,6 +67,7 @@ private:
   double ConditionRawJoystickInput(double RawJoystickVal, double mixer = 0.75) noexcept;
   void ConfigureBindings() noexcept;
   void LEDStateBindings() noexcept;
+  void ConfigureTransferArmBreak() noexcept;
 
   bool m_fieldOriented{true};
   bool m_lock{false};

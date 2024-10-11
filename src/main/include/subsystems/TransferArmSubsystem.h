@@ -17,6 +17,9 @@ public:
     void SetArmMotorVoltagePercent(const double percent) noexcept;
     units::turn_t GetTransferArmPosition() noexcept;
 
+    void LockBreak() noexcept;
+    void ReleaseBreak() noexcept;
+
 private:
     rev::CANSparkMax m_TransferArmMotor{arm::kTransferArmMotorCanID, rev::CANSparkMax::MotorType::kBrushless};
     rev::SparkAbsoluteEncoder m_encoder = m_TransferArmMotor.GetAbsoluteEncoder(rev::SparkAbsoluteEncoder::Type::kDutyCycle);

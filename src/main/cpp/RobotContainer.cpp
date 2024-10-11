@@ -58,6 +58,7 @@ RobotContainer::RobotContainer() noexcept
   // Configure the button bindings
   ConfigureBindings();
   LEDStateBindings();
+  ConfigureTransferArmBreak();
 }
 
 // #pragma region Autonomous
@@ -212,6 +213,14 @@ void RobotContainer::LEDStateBindings() noexcept {
   disabledTrigger.OnTrue(normalLEDCommand);
   (!disabledTrigger && !noteTrigger).OnTrue(allianceLEDCommand);
   (!disabledTrigger && noteTrigger).OnTrue(noteLEDCommand);
+}
+
+void RobotContainer::ConfigureTransferArmBreak() noexcept {
+  auto disabledTrigger = frc2::RobotModeTriggers::Disabled();
+
+  m_transferArmSubsystem.ReleaseBreak();
+  disabledTrigger.OnTrue(new frc2::InstantCommand([&]() -> void {m_transferArmSubsystem.ReleaseBreak();}));
+  disabledTrigger.OnFalse(new frc2::InstantCommand([&]() -> void {m_transferArmSubsystem.LockBreak();}));
 }
 
 frc2::CommandPtr RobotContainer::DriveCommandFactory(RobotContainer *container) noexcept
