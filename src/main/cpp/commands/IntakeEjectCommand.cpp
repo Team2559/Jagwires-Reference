@@ -25,7 +25,9 @@ void IntakeEjectCommand::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void IntakeEjectCommand::Execute() {
-  if (!timeDelay || timer.HasElapsed(1.2_s)) {
+  if (currentMode == kCurrentHigh) {
+    intakeSubsystem->SetSpinMotorVoltagePercent(intake::kIntakeSpinMotorAmpEjectVoltagePercent);
+  } else {
     intakeSubsystem->SetSpinMotorVoltagePercent(intake::kIntakeSpinMotorEjectVoltagePercent);
   }
 }
@@ -42,5 +44,5 @@ void IntakeEjectCommand::End(bool interrupted) {
 
 // Returns true when the command should end.
 bool IntakeEjectCommand::IsFinished() {
-  return timeDelay ? timer.HasElapsed(3_s) : timer.HasElapsed(2_s);
+  return timer.HasElapsed(2_s);
 }

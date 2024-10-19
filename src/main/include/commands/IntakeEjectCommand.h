@@ -18,9 +18,8 @@
 class IntakeEjectCommand
     : public frc2::CommandHelper<frc2::Command, IntakeEjectCommand> {
  public:
-  explicit IntakeEjectCommand(bool timeDelay, IntakeMotorCurrent currentMode, IntakeSubsystem *intakeSubsystem)
-      : timeDelay{timeDelay},
-        currentMode{currentMode},
+  explicit IntakeEjectCommand(IntakeMotorCurrent currentMode, IntakeSubsystem *intakeSubsystem)
+      : currentMode{currentMode},
         intakeSubsystem{intakeSubsystem}
       {
         AddRequirements(intakeSubsystem);
@@ -32,7 +31,6 @@ class IntakeEjectCommand
   bool IsFinished() override;
  
  private:
-    bool timeDelay{true};
     IntakeMotorCurrent currentMode;
     IntakeSubsystem *intakeSubsystem{nullptr};
     frc::Timer timer{};

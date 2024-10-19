@@ -140,6 +140,7 @@ namespace shooter
     constexpr bool kRightShooterMotorIsInverted = true;
 
     constexpr double kShooterMotorVoltagePercent = .80;
+    constexpr units::second_t kShooterSpoolTime = 1.0_s;
 }
 
 namespace intake 
@@ -149,7 +150,8 @@ namespace intake
     constexpr bool kIntakeSpinMotorIsInverted = false;
 
     constexpr double kIntakeSpinMotorVoltagePercent = .50;
-    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.78;
+    constexpr double kIntakeSpinMotorAmpEjectVoltagePercent = -.78;
+    constexpr double kIntakeSpinMotorEjectVoltagePercent = -.90;
     constexpr bool timerDelayShooter = true;
     constexpr bool timerDelayAmp = false;
 

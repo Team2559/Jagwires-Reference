@@ -19,7 +19,7 @@ void IntakeSubsystem::SetSpinMotorCurrent(IntakeMotorCurrent mode) noexcept
         m_IntakeMotor.SetSmartCurrentLimit(80);
         break;
     case kCurrentMed:
-        m_IntakeMotor.SetSmartCurrentLimit(60);
+        m_IntakeMotor.SetSmartCurrentLimit(80);
     case kCurrentLow:
         m_IntakeMotor.SetSmartCurrentLimit(30);
     }

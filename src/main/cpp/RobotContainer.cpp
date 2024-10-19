@@ -104,43 +104,78 @@ std::optional<frc2::CommandPtr> RobotContainer::GetAutonomousCommand() noexcept
   if (m_autoSelected == kBlueLongAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
-     .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    .AndThen(
+      (
+        frc2::cmd::Wait(shooter::kShooterSpoolTime) /* Minimum time for shooter motors to spool */
+        .AndThen(IntakeEjectCommand(IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
+      ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+    )
     .AndThen(DriveCommand(.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.0, 0, 0.5, .5_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kBlueMiddleAuto)
   {
     return DriveCommand(1.0, 0, 0, .85_s, &m_driveSubsystem).ToPtr()
-    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    .AndThen(
+      (
+        frc2::cmd::Wait(shooter::kShooterSpoolTime) /* Minimum time for shooter motors to spool */
+        .AndThen(IntakeEjectCommand(IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
+      ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+    )
     .AndThen(DriveCommand(0.7, 0, 0, 1_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kBlueShortAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
-    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    .AndThen(
+      (
+        frc2::cmd::Wait(shooter::kShooterSpoolTime) /* Minimum time for shooter motors to spool */
+        .AndThen(IntakeEjectCommand(IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
+      ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+    )
     .AndThen(DriveCommand(0.0, 0, -0.5, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedShortAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
-    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    .AndThen(
+      (
+        frc2::cmd::Wait(shooter::kShooterSpoolTime) /* Minimum time for shooter motors to spool */
+        .AndThen(IntakeEjectCommand(IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
+      ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+    )
     .AndThen(DriveCommand(0.0, 0, 0.5, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(.7, 0.0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedMiddleAuto)
   {
     return DriveCommand(1, 0, 0, .85_s, &m_driveSubsystem).ToPtr()
-    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    .AndThen(
+      (
+        frc2::cmd::Wait(shooter::kShooterSpoolTime) /* Minimum time for shooter motors to spool */
+        .AndThen(IntakeEjectCommand(IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
+      ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+    )
     .AndThen(DriveCommand(0.7, 0, 0, 1_s, &m_driveSubsystem).ToPtr());
   }else if(m_autoSelected == kRedLongAuto)
   {
     return DriveCommand(.7, 0, 0, .8_s, &m_driveSubsystem).ToPtr()
-    .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    .AndThen(
+      (
+        frc2::cmd::Wait(shooter::kShooterSpoolTime) /* Minimum time for shooter motors to spool */
+        .AndThen(IntakeEjectCommand(IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
+      ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+    )
     .AndThen(DriveCommand(0.7, 0, 0, .7_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.0, 0, -0.5, .5_s, &m_driveSubsystem).ToPtr())
     .AndThen(DriveCommand(0.7, 0, 0, 3_s, &m_driveSubsystem).ToPtr());
   }else
   {
     return DriveCommand(1.0, 0, 0, .5_s, &m_driveSubsystem).ToPtr();
-    // .AndThen(ShootCommands(&m_shooterSubsystem).ToPtr().AlongWith(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentLow, &m_intakeSubsystem).ToPtr()))
+    // .AndThen(
+    //   (
+    //     frc2::cmd::Wait(shooter::kShooterSpoolTime) /* Minimum time for shooter motors to spool */
+    //     .AndThen(IntakeEjectCommand(IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
+    //   ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
+    // )
     // .AndThen(DriveCommand(0.7, 0, 0, 1.5_s, &m_driveSubsystem).ToPtr());
   }
        /*
@@ -390,15 +425,15 @@ void RobotContainer::ConfigureBindings() noexcept
           .ToPtr());
 
   m_xboxOperate.A().OnTrue(IntakeCommand(&m_intakeSubsystem).ToPtr());
-  m_xboxOperate.B().OnTrue(IntakeEjectCommand(intake::timerDelayAmp, IntakeMotorCurrent::kCurrentHigh, &m_intakeSubsystem).ToPtr());
+  m_xboxOperate.B().OnTrue(IntakeEjectCommand(IntakeMotorCurrent::kCurrentHigh, &m_intakeSubsystem).ToPtr());
 
   // Runs shoot command to move arm into postion, start up the shooting motors and eject the note
   m_xboxOperate.Y().OnTrue(
     (
       (
         PIDPositionTransferArm(arm::kArmToShooterAngle, &m_transferArmSubsystem).ToPtr()
-        .AlongWith(frc2::cmd::Wait(1.0_s) /* Minimum time for shooter motors to spool */)
-      ).AndThen(IntakeEjectCommand(intake::timerDelayShooter, IntakeMotorCurrent::kCurrentMed, &m_intakeSubsystem).ToPtr())
+        .AlongWith(frc2::cmd::Wait(shooter::kShooterSpoolTime) /* Minimum time for shooter motors to spool */)
+      ).AndThen(IntakeEjectCommand(IntakeMotorCurrent::kCurrentHigh, &m_intakeSubsystem).ToPtr())
     ).DeadlineWith(ShootCommands(&m_shooterSubsystem).ToPtr())
   );
 
