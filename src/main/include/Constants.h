@@ -20,10 +20,19 @@ namespace physical
     // Nominal Wheel Circumference (pi * Diameter): ~0.3192m;
     // 8.16 / 0.3192 => ~25.57.
 
+    // SDS Mk4 L1, L2, L3 Gear Ratio: 8.14:1, 6.75:1, 6.12:1
+    // Nominal Wheel Diameter (4"): =0.1016m;
+    // Nominal Wheel Circumference (pi * Diameter): ~0.3192m;
+    // 6.75 / 0.3192 => ~21.15.
+
     // This should be empirically determined!  This is just an initial guess.
     // This is used for both distance and velocity control.  If this is off, it
     // will throw off kMaxDriveSpeed and kMaxTurnRate, as well as drive values.
-    constexpr units::meter_t kDriveMetersPerRotation = 1.0_m / 25.57;
+    constexpr units::meter_t kDriveMetersPerRotation = 1.0_m / 21.15;
+
+    // Purley for display, gear ratio between turning motor primary encoder and the
+    // actual wheel module
+    constexpr double kTurnGearing = 150.0 / 7.0;
 
     // SDS Mk3 Standard (or Fast) Max Free Speed: 12.1 (or 14.4) feet/second;
     // This is an upper bound, for various reasons.  It needs to be empirically

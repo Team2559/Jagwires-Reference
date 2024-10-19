@@ -80,8 +80,8 @@ SwerveModule::SwerveModule(
     m_turningMotor->AddConfig(SmartMotorBase::ConfigMap{
         {"kStatus1", uint{250}}, // ms
         {"kStatus2", uint{250}}, // ms
-        {"kPositionConversionFactor", double{360.0}},
-        {"kVelocityConversionFactor", double{360.0 / 60.0}},
+        {"kPositionConversionFactor", double{360.0 / physical::kTurnGearing}},
+        {"kVelocityConversionFactor", double{360.0 / physical::kTurnGearing / 60.0}},
         {"kSmartCurrentStallLimit", uint{40}}, // Amps
     });
     m_turningMotor->ApplyConfig(false);
