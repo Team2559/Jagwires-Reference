@@ -641,8 +641,8 @@ void SparkMax::Periodic() noexcept
     // This call should be safe and "free", in that it only reports information
     // collected from periodic status frames.  To capture any transient events,
     // GetStickyFaults() is used instead of GetFaults().  There is no
-    // expectation that fault information is instataeously accurate, it is only
-    // used for reporting and to detect any motor controller reboots.  Make
+    // expectation that fault information is instantaneously accurate, it is
+    // only used for reporting and to detect any motor controller reboots.  Make
     // things extra sticky using bitwise OR.  This is cleared by ClearFaults().
     // This could lead to overcounting, but errors are cleared fairly quickly
     // and it's not terrible to draw extra attention to any problems.
@@ -654,9 +654,9 @@ void SparkMax::Periodic() noexcept
     // In microseconds.  At 50Hz, this will nominally tick by increments of 20.
     // The object here is too only continue at a rate of around 3Hz, and to
     // spread things around so that the aggregate work of all motor controllers
-    // is done evenly; to avoid synchonizing many motor controllers so they all
+    // is done evenly; to avoid synchronizing many motor controllers so they all
     // do this work during the same period.  The CAN ID (mod 16) is used to
-    // facillitate this spread, along with a counter to track Periodic() calls.
+    // facilitate this spread, along with a counter to track Periodic() calls.
     // If the rate for Periodic() is too low (< ~20Hz), things are going to run
     // slowly, but the robot is going to be generally sluggish at that point.
     const uint64_t FPGATime = frc::RobotController::GetFPGATime();
