@@ -11,6 +11,8 @@
 
 #include "RobotContainer.h"
 
+void errorHandler(int sig);
+
 class Robot : public frc::TimedRobot
 {
 public:

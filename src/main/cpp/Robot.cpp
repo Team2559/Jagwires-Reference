@@ -11,9 +11,31 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc/shuffleboard/Shuffleboard.h>
 #include <frc/shuffleboard/ShuffleboardTab.h>
+#include <execinfo.h>
+#include <signal.h>
+
+void errorHandler(int sig) {
+  void *array[10];
+  size_t size;
+
+  // get void*'s for all entries on the stack
+  size = backtrace(array, 10);
+
+  // print out all the frames to stderr
+  fprintf(stderr, "Error: signal %s:\n", strsignal(sig));
+  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  exit(128 + sig);
+}
+
 
 void Robot::RobotInit() noexcept
 {
+  // signal(SIGILL, errorHandler);
+  // signal(SIGBUS, errorHandler);
+  // signal(SIGFPE, errorHandler);
+  // signal(SIGSEGV, errorHandler);
+  // signal(SIGPIPE, errorHandler);
+
   frc::LiveWindow::SetEnabled(false);
   frc::LiveWindow::DisableAllTelemetry();
 
